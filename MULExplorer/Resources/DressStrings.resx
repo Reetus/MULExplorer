@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Items" xml:space="preserve"><value>Wearable items</value></data>
+  <data name="Worn" xml:space="preserve"><value>Worn</value></data>
+  <data name="Body" xml:space="preserve"><value>Body</value></data>
+  <data name="BodyHumanMale" xml:space="preserve"><value>Human male</value></data>
+  <data name="BodyHumanFemale" xml:space="preserve"><value>Human female</value></data>
+  <data name="BodyElfMale" xml:space="preserve"><value>Elf male</value></data>
+  <data name="BodyElfFemale" xml:space="preserve"><value>Elf female</value></data>
+  <data name="BodyGargoyleMale" xml:space="preserve"><value>Gargoyle male</value></data>
+  <data name="BodyGargoyleFemale" xml:space="preserve"><value>Gargoyle female</value></data>
+  <data name="BodyHue" xml:space="preserve"><value>Skin hue</value></data>
+  <data name="ItemHue" xml:space="preserve"><value>Item hue</value></data>
+  <data name="Dress" xml:space="preserve"><value>Dress item</value></data>
+  <data name="Undress" xml:space="preserve"><value>Undress</value></data>
+  <data name="UndressAll" xml:space="preserve"><value>Undress all</value></data>
+  <data name="Paperdoll" xml:space="preserve"><value>Paperdoll</value></data>
+  <data name="Figure" xml:space="preserve"><value>In-world</value></data>
+  <data name="Action" xml:space="preserve"><value>Action</value></data>
+  <data name="Direction" xml:space="preserve"><value>Direction</value></data>
+  <data name="Animate" xml:space="preserve"><value>Animate</value></data>
+  <data name="Layer" xml:space="preserve"><value>Layer {0}</value></data>
+  <data name="WornItem" xml:space="preserve"><value>{0} (0x{1:X4}) - layer {2}</value></data>
+  <data name="ItemsShown" xml:space="preserve"><value>{0:N0} of {1:N0} wearable items</value></data>
+  <data name="Hint" xml:space="preserve"><value>Double-click an item to dress it. Read-only: outfits are not saved.</value></data>
+</root>

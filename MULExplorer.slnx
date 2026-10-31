@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="UODataAccess/UODataAccess.csproj" />
+  <Project Path="MULExplorer.Mcp/MULExplorer.Mcp.csproj" />
+  <Project Path="MULExplorer/MULExplorer.csproj" />
+  <Project Path="MULExplorer.Tests/MULExplorer.Tests.csproj" />
+</Solution>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="NotPresent" xml:space="preserve"><value>This client has no verdata.mul. Verdata patches were only used by older clients; modern clients ship none.</value></data>
+  <data name="NoPatches" xml:space="preserve"><value>verdata.mul contains no patches.</value></data>
+  <data name="Truncated" xml:space="preserve"><value>The patch table is truncated: the header declares {0:N0} records but only {1:N0} fit in the file.</value></data>
+  <data name="PatchType" xml:space="preserve"><value>Patch type</value></data>
+  <data name="Patches" xml:space="preserve"><value>Patches</value></data>
+  <data name="PatchCount" xml:space="preserve"><value>Patches: {0:N0}</value></data>
+  <data name="File" xml:space="preserve"><value>File</value></data>
+  <data name="Index" xml:space="preserve"><value>Index</value></data>
+  <data name="Lookup" xml:space="preserve"><value>Lookup</value></data>
+  <data name="Length" xml:space="preserve"><value>Length</value></data>
+  <data name="Extra" xml:space="preserve"><value>Extra</value></data>
+  <data name="Data" xml:space="preserve"><value>Data (first 256 bytes)</value></data>
+  <data name="GroupArt" xml:space="preserve"><value>Art (art.mul)</value></data>
+  <data name="GroupGumps" xml:space="preserve"><value>Gumps (gumpart.mul)</value></data>
+  <data name="GroupTextures" xml:space="preserve"><value>Textures (texmaps.mul)</value></data>
+  <data name="GroupTileData" xml:space="preserve"><value>TileData (tiledata.mul)</value></data>
+  <data name="GroupAnimData" xml:space="preserve"><value>AnimData (animdata.mul)</value></data>
+  <data name="GroupMap" xml:space="preserve"><value>Map (map0.mul)</value></data>
+  <data name="GroupStatics" xml:space="preserve"><value>Statics (statics0.mul)</value></data>
+  <data name="GroupAnimations" xml:space="preserve"><value>Animations (anim.mul)</value></data>
+  <data name="GroupSounds" xml:space="preserve"><value>Sounds (sound.mul)</value></data>
+  <data name="GroupMulti" xml:space="preserve"><value>Multi (multi.mul)</value></data>
+  <data name="GroupSkills" xml:space="preserve"><value>Skills (skills.mul)</value></data>
+  <data name="GroupUnknown" xml:space="preserve"><value>File {0}</value></data>
+  <data name="PatchItemFormat" xml:space="preserve"><value>0x{0:X4}  (file {1})</value></data>
+  <data name="GroupItemFormat" xml:space="preserve"><value>{0} ({1:N0})</value></data>
+  <data name="FileValueFormat" xml:space="preserve"><value>{0}  ({1})</value></data>
+</root>

@@ -1,0 +1,16 @@
+{
+  "_comment": "Example MCP client configs for MUL Explorer. Pick one.",
+  "http (GUI running, or headless --mcp-http)": {
+    "mcpServers": {
+      "mul-explorer": { "type": "http", "url": "http://127.0.0.1:5006/mcp" }
+    }
+  },
+  "stdio (spawned headless, no GUI)": {
+    "mcpServers": {
+      "mul-explorer": {
+        "command": "C:\path\to\MULExplorer.exe",
+        "args": ["--mcp-stdio", "--uo-folder", "C:\path\to\Ultima Online Classic"]
+      }
+    }
+  }
+}

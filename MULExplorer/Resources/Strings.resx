@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="AppTitle" xml:space="preserve"><value>MUL Explorer</value></data>
+  <data name="MenuFile" xml:space="preserve"><value>_File</value></data>
+  <data name="MenuSetFolder" xml:space="preserve"><value>_Set UO Folder…</value></data>
+  <data name="MenuReload" xml:space="preserve"><value>_Reload Files</value></data>
+  <data name="MenuExit" xml:space="preserve"><value>E_xit</value></data>
+  <data name="MenuView" xml:space="preserve"><value>_View</value></data>
+  <data name="MenuTheme" xml:space="preserve"><value>_Theme</value></data>
+  <data name="MenuThemeDark" xml:space="preserve"><value>_Dark</value></data>
+  <data name="MenuThemeLight" xml:space="preserve"><value>_Light</value></data>
+  <data name="MenuThemeSystem" xml:space="preserve"><value>_System</value></data>
+  <data name="MenuBackdrop" xml:space="preserve"><value>_Backdrop</value></data>
+  <data name="MenuBackdropMica" xml:space="preserve"><value>_Mica</value></data>
+  <data name="MenuBackdropAcrylic" xml:space="preserve"><value>_Acrylic</value></data>
+  <data name="MenuBackdropSolid" xml:space="preserve"><value>_Solid</value></data>
+  <data name="UpdateReady" xml:space="preserve"><value>Update {0} is ready</value></data>
+  <data name="MenuRestartToUpdate" xml:space="preserve"><value>_Restart to Update</value></data>
+  <data name="MenuMcp" xml:space="preserve"><value>_MCP</value></data>
+  <data name="MenuMcpStart" xml:space="preserve"><value>_Start Server</value></data>
+  <data name="MenuMcpStop" xml:space="preserve"><value>S_top Server</value></data>
+  <data name="MenuMcpCopyUrl" xml:space="preserve"><value>_Copy Server URL</value></data>
+  <data name="MenuHelp" xml:space="preserve"><value>_Help</value></data>
+  <data name="MenuAbout" xml:space="preserve"><value>_About</value></data>
+  <data name="TabMultis" xml:space="preserve"><value>Multis</value></data>
+  <data name="TabAnimations" xml:space="preserve"><value>Animations</value></data>
+  <data name="TabItems" xml:space="preserve"><value>Items</value></data>
+  <data name="TabLandTiles" xml:space="preserve"><value>Land Tiles</value></data>
+  <data name="TabTextures" xml:space="preserve"><value>Textures</value></data>
+  <data name="TabGumps" xml:space="preserve"><value>Gumps</value></data>
+  <data name="TabSounds" xml:space="preserve"><value>Sounds</value></data>
+  <data name="TabHues" xml:space="preserve"><value>Hues</value></data>
+  <data name="TabFonts" xml:space="preserve"><value>Fonts</value></data>
+  <data name="TabCliloc" xml:space="preserve"><value>CliLoc</value></data>
+  <data name="TabMap" xml:space="preserve"><value>Map</value></data>
+  <data name="TabLight" xml:space="preserve"><value>Light</value></data>
+  <data name="TabSpeech" xml:space="preserve"><value>Speech</value></data>
+  <data name="TabSkills" xml:space="preserve"><value>Skills</value></data>
+  <data name="TabAnimData" xml:space="preserve"><value>AnimData</value></data>
+  <data name="TabMultiMap" xml:space="preserve"><value>MultiMap/Facets</value></data>
+  <data name="TabDress" xml:space="preserve"><value>Dress</value></data>
+  <data name="TabTileData" xml:space="preserve"><value>TileData</value></data>
+  <data name="TabRadarColor" xml:space="preserve"><value>RadarColor</value></data>
+  <data name="TabSkillGrp" xml:space="preserve"><value>SkillGrp</value></data>
+  <data name="TabVerdata" xml:space="preserve"><value>Verdata</value></data>
+  <data name="Search" xml:space="preserve"><value>Search</value></data>
+  <data name="SearchWatermark" xml:space="preserve"><value>Name or id (0x…)</value></data>
+  <data name="Id" xml:space="preserve"><value>Id</value></data>
+  <data name="Name" xml:space="preserve"><value>Name</value></data>
+  <data name="Flags" xml:space="preserve"><value>Flags</value></data>
+  <data name="Width" xml:space="preserve"><value>Width</value></data>
+  <data name="Height" xml:space="preserve"><value>Height</value></data>
+  <data name="Size" xml:space="preserve"><value>Size</value></data>
+  <data name="Count" xml:space="preserve"><value>Count</value></data>
+  <data name="Hue" xml:space="preserve"><value>Hue</value></data>
+  <data name="NotImplemented" xml:space="preserve"><value>This tab is not implemented yet.</value></data>
+  <data name="NoFolder" xml:space="preserve"><value>No UO client folder is set. Use File › Set UO Folder… to choose one.</value></data>
+  <data name="LoadFailed" xml:space="preserve"><value>Could not load {0}: {1}</value></data>
+  <data name="EntriesShown" xml:space="preserve"><value>{0:N0} of {1:N0} shown</value></data>
+  <data name="NoSelection" xml:space="preserve"><value>Nothing selected</value></data>
+  <data name="StatusFolder" xml:space="preserve"><value>Folder: {0}</value></data>
+  <data name="StatusNoFolder" xml:space="preserve"><value>No folder loaded</value></data>
+  <data name="StatusMcpRunning" xml:space="preserve"><value>MCP: {0}</value></data>
+  <data name="StatusMcpStopped" xml:space="preserve"><value>MCP: off</value></data>
+  <data name="StatusMcpFailed" xml:space="preserve"><value>MCP failed to start: {0}</value></data>
+  <data name="SelectFolderTitle" xml:space="preserve"><value>Select Ultima Online client folder</value></data>
+  <data name="InvalidFolder" xml:space="preserve"><value>That folder does not look like a UO client (tiledata.mul not found).</value></data>
+  <data name="AboutText" xml:space="preserve"><value>MUL Explorer — a read-only viewer for Ultima Online client files, modelled on UOFiddler.</value></data>
+</root>

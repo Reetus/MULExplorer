@@ -1,0 +1,99 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MULExplorer.ViewModels.Tabs"
+             xmlns:r="using:MULExplorer.Resources"
+             x:Class="MULExplorer.Views.Tabs.MultisView"
+             x:DataType="vm:MultisViewModel">
+    <Grid ColumnDefinitions="340,6,*" RowDefinitions="Auto,*,Auto">
+        <!-- Toolbar -->
+        <StackPanel Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="8" Margin="6">
+            <TextBox Name="SearchBox" Width="260" PlaceholderText="{x:Static r:Strings.SearchWatermark}"
+                     Text="{Binding SearchText}" />
+            <TextBlock VerticalAlignment="Center" Text="{x:Static r:MultisStrings.Source}"
+                       IsVisible="{Binding HasSourceChoice}" />
+            <ComboBox Name="SourceBox" MinWidth="110" ItemsSource="{Binding Sources}" SelectedItem="{Binding Source}"
+                      IsVisible="{Binding HasSourceChoice}" />
+        </StackPanel>
+
+        <!-- Multi list -->
+        <ListBox Name="MultiList" Grid.Row="1" ItemsSource="{Binding VisibleRows}" SelectedItem="{Binding SelectedRow}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="vm:MultiRow">
+                    <Grid ColumnDefinitions="*,Auto">
+                        <TextBlock Text="{Binding Label}" TextTrimming="CharacterEllipsis" />
+                        <TextBlock Grid.Column="1" Classes="label" Margin="8,0,0,0" Text="{Binding Kind}" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <GridSplitter Grid.Row="1" Grid.Column="1" ResizeDirection="Columns" />
+
+        <TabControl Name="Pages" Grid.Row="1" Grid.Column="2" Margin="4,0,0,0" SelectedIndex="{Binding PageIndex}">
+            <TabItem Header="{x:Static r:MultisStrings.Graphic}">
+                <Grid RowDefinitions="Auto,*,Auto">
+                    <Grid ColumnDefinitions="Auto,*,Auto,Auto" Margin="6,4">
+                        <TextBlock VerticalAlignment="Center" MinWidth="110" Text="{Binding HeightLabel}" />
+                        <Slider Name="HeightSlider" Grid.Column="1" Minimum="0" Maximum="{Binding MaxHeightLimit}"
+                                Value="{Binding HeightCut}" SmallChange="1" LargeChange="5"
+                                IsSnapToTickEnabled="True" TickFrequency="1" Margin="8,0" />
+                        <CheckBox Grid.Column="2" Margin="0,0,12,0" Content="{x:Static r:MultisStrings.FitToWindow}"
+                                  IsChecked="{Binding FitToWindow}" />
+                        <CheckBox Grid.Column="3" Content="{x:Static r:MultisStrings.ShowInvisible}"
+                                  IsChecked="{Binding ShowInvisible}" />
+                    </Grid>
+                    <Border Grid.Row="1" Classes="preview" Margin="6,0" Padding="0">
+                        <Grid>
+                            <Image Name="FitImage" Source="{Binding Image}" Stretch="Uniform" StretchDirection="DownOnly"
+                                   Margin="8" IsVisible="{Binding FitToWindow}" />
+                            <ScrollViewer HorizontalScrollBarVisibility="Auto" VerticalScrollBarVisibility="Auto"
+                                          IsVisible="{Binding !FitToWindow}">
+                                <Image Name="MultiImage" Source="{Binding Image}" Stretch="None" Margin="8"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </ScrollViewer>
+                            <TextBlock Classes="placeholder" Text="{x:Static r:MultisStrings.NoImage}"
+                                       IsVisible="{Binding HasNoImage}" />
+                        </Grid>
+                    </Border>
+                    <SelectableTextBlock Grid.Row="2" Margin="6,4" TextWrapping="Wrap" Text="{Binding MultiStatus}" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="{x:Static r:MultisStrings.ComponentList}">
+                <Grid RowDefinitions="Auto,*" Margin="6,4">
+                    <Grid ColumnDefinitions="80,60,60,60,60,60,*" Margin="12,0,0,4">
+                        <TextBlock Classes="label" Text="{x:Static r:MultisStrings.ColItem}" />
+                        <TextBlock Grid.Column="1" Classes="label" Text="{x:Static r:MultisStrings.ColX}" />
+                        <TextBlock Grid.Column="2" Classes="label" Text="{x:Static r:MultisStrings.ColY}" />
+                        <TextBlock Grid.Column="3" Classes="label" Text="{x:Static r:MultisStrings.ColZ}" />
+                        <TextBlock Grid.Column="4" Classes="label" Text="{x:Static r:MultisStrings.ColFlags}" />
+                        <TextBlock Grid.Column="5" Classes="label" Text="{x:Static r:MultisStrings.ColUnk1}" />
+                        <TextBlock Grid.Column="6" Classes="label" Text="{x:Static r:MultisStrings.ColVisible}" />
+                    </Grid>
+                    <ListBox Name="ComponentList" Grid.Row="1" ItemsSource="{Binding Components}">
+                        <ListBox.Styles>
+                            <Style Selector="ListBoxItem">
+                                <Setter Property="Padding" Value="12,2" />
+                                <Setter Property="MinHeight" Value="0" />
+                            </Style>
+                        </ListBox.Styles>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="vm:MultiComponentRow">
+                                <Grid ColumnDefinitions="80,60,60,60,60,60,*">
+                                    <TextBlock Text="{Binding Item}" />
+                                    <TextBlock Grid.Column="1" Text="{Binding X}" />
+                                    <TextBlock Grid.Column="2" Text="{Binding Y}" />
+                                    <TextBlock Grid.Column="3" Text="{Binding Z}" />
+                                    <TextBlock Grid.Column="4" Text="{Binding Flags}" />
+                                    <TextBlock Grid.Column="5" Text="{Binding Unk1}" />
+                                    <TextBlock Grid.Column="6" Text="{Binding Visible}" />
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <TextBlock Grid.Row="2" Grid.ColumnSpan="3" Classes="status" Text="{Binding Summary}" />
+    </Grid>
+</UserControl>

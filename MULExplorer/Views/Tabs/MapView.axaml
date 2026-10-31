@@ -1,0 +1,99 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MULExplorer.ViewModels.Tabs"
+             xmlns:c="using:MULExplorer.Controls"
+             xmlns:r="using:MULExplorer.Resources"
+             x:Class="MULExplorer.Views.Tabs.MapView"
+             x:DataType="vm:MapViewModel">
+    <Grid ColumnDefinitions="*,6,300" RowDefinitions="Auto,*,Auto">
+        <!-- Toolbar (UOFiddler: facet menu, View menu, zoom, goto) -->
+        <WrapPanel Grid.ColumnSpan="3" Orientation="Horizontal" Margin="6,6,6,0">
+            <TextBlock VerticalAlignment="Center" Margin="0,0,6,6" Text="{x:Static r:MapStrings.Facet}" />
+            <ComboBox Name="FacetBox" MinWidth="140" Margin="0,0,12,6"
+                      ItemsSource="{Binding Facets}" SelectedItem="{Binding SelectedFacet}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:FacetOption">
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <CheckBox Name="StaticsBox" Margin="0,0,12,6" Content="{x:Static r:MapStrings.ShowStatics}" IsChecked="{Binding ShowStatics}" />
+            <CheckBox Name="PatchesBox" Margin="0,0,12,6" Content="{x:Static r:MapStrings.UsePatches}" IsChecked="{Binding UsePatches}"
+                      IsEnabled="{Binding HasPatches}" />
+            <CheckBox Name="AlternateBox" Margin="0,0,12,6" Content="{x:Static r:MapStrings.UseAlternate}" IsChecked="{Binding UseAlternate}"
+                      IsVisible="{Binding HasAlternate}" />
+            <CheckBox Margin="0,0,12,6" Content="{x:Static r:MapStrings.ShowCenterCross}" IsChecked="{Binding ShowCenterCross}" />
+            <Button Name="ZoomOutButton" Margin="0,0,4,6" Content="{x:Static r:MapStrings.ZoomOut}" Command="{Binding ZoomOutCommand}" />
+            <Button Name="ZoomInButton" Margin="0,0,12,6" Content="{x:Static r:MapStrings.ZoomIn}" Command="{Binding ZoomInCommand}" />
+            <TextBox Name="GoToBox" Width="130" Margin="0,0,4,6" PlaceholderText="{x:Static r:MapStrings.GoToWatermark}"
+                     Text="{Binding GoToText}">
+                <TextBox.KeyBindings>
+                    <KeyBinding Gesture="Enter" Command="{Binding GoToCommand}" />
+                </TextBox.KeyBindings>
+            </TextBox>
+            <Button Margin="0,0,12,6" Content="{x:Static r:MapStrings.GoTo}" Command="{Binding GoToCommand}" />
+        </WrapPanel>
+
+        <c:MapCanvas Name="Canvas" Grid.Row="1"
+                     Source="{Binding Source}"
+                     CenterX="{Binding CenterX}" CenterY="{Binding CenterY}" Zoom="{Binding Zoom}"
+                     MinZoom="0.125" MaxZoom="8"
+                     HoverPixel="{Binding HoverTile}" SelectedPixel="{Binding InspectedTile}"
+                     ShowCenterCross="{Binding ShowCenterCross}" />
+
+        <GridSplitter Grid.Row="1" Grid.Column="1" ResizeDirection="Columns" />
+
+        <!-- Tile info (UOFiddler opens this as the GetMapInfo window) -->
+        <ScrollViewer Grid.Row="1" Grid.Column="2">
+            <StackPanel Margin="8" Spacing="8">
+                <TextBlock FontWeight="SemiBold" Text="{x:Static r:MapStrings.TileInfo}" />
+                <SelectableTextBlock Name="InspectedText" Text="{Binding InspectedText}" TextWrapping="Wrap" />
+                <ItemsControl ItemsSource="{Binding LandDetails}" Grid.IsSharedSizeScope="True">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="vm:PropertyRow">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                                    <ColumnDefinition Width="12" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Classes="label" Text="{Binding Label}" />
+                                <SelectableTextBlock Grid.Column="2" Text="{Binding Value}" TextWrapping="Wrap" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock Classes="label" Text="{x:Static r:MapStrings.Statics}" />
+                <Grid ColumnDefinitions="64,*,36,44" Margin="0,0,0,2">
+                    <TextBlock Classes="label" Text="{x:Static r:Strings.Id}" />
+                    <TextBlock Grid.Column="1" Classes="label" Text="{x:Static r:Strings.Name}" />
+                    <TextBlock Grid.Column="2" Classes="label" Text="{x:Static r:MapStrings.Z}" />
+                    <TextBlock Grid.Column="3" Classes="label" Text="{x:Static r:Strings.Hue}" />
+                </Grid>
+                <ItemsControl Name="StaticsList" ItemsSource="{Binding Statics}">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="vm:MapStaticRow">
+                            <Grid ColumnDefinitions="64,*,36,44">
+                                <SelectableTextBlock Text="{Binding Id}" />
+                                <TextBlock Grid.Column="1" Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
+                                <TextBlock Grid.Column="2" Text="{Binding Z}" />
+                                <TextBlock Grid.Column="3" Text="{Binding Hue}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- Status strip -->
+        <Border Grid.Row="2" Grid.ColumnSpan="3" Classes="statusbar">
+            <WrapPanel>
+                <TextBlock Name="CoordsText" Text="{Binding CoordsText}" MinWidth="130" />
+                <TextBlock Name="ZoomText" Text="{Binding ZoomText}" MinWidth="80" />
+                <TextBlock Text="{Binding FacetText}" />
+                <TextBlock Text="{Binding PatchText}" />
+                <TextBlock Text="{Binding Message}" Foreground="{DynamicResource SystemControlErrorTextForegroundBrush}" />
+            </WrapPanel>
+        </Border>
+    </Grid>
+</UserControl>

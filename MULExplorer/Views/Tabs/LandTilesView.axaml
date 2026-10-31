@@ -1,0 +1,79 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MULExplorer.ViewModels.Tabs"
+             xmlns:c="using:MULExplorer.Controls"
+             xmlns:r="using:MULExplorer.Resources"
+             x:Class="MULExplorer.Views.Tabs.LandTilesView"
+             x:DataType="vm:LandTilesViewModel">
+    <Grid ColumnDefinitions="*,6,320" RowDefinitions="Auto,*,Auto">
+        <!-- Toolbar -->
+        <StackPanel Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="8" Margin="6">
+            <TextBox Name="SearchBox" Width="260" PlaceholderText="{x:Static r:Strings.SearchWatermark}"
+                     Text="{Binding SearchText}" />
+            <CheckBox Content="{x:Static r:LandTilesStrings.ShowFreeSlots}" IsChecked="{Binding ShowFreeSlots}" />
+        </StackPanel>
+
+        <!-- Thumbnails -->
+        <c:TileGrid Name="Grid" Grid.Row="1" CellWidth="49" CellHeight="49"
+                    Ids="{Binding VisibleIds}"
+                    ImageProvider="{Binding ThumbnailProvider}"
+                    SelectedId="{Binding SelectedId}" />
+
+        <GridSplitter Grid.Row="1" Grid.Column="1" ResizeDirection="Columns" />
+
+        <!-- Preview + details -->
+        <ScrollViewer Grid.Row="1" Grid.Column="2">
+            <StackPanel Margin="8" Spacing="8">
+                <Grid ColumnDefinitions="*,8,*">
+                    <Border Classes="preview" MinHeight="120">
+                        <Image Name="PreviewImage" Source="{Binding Preview}" Width="88" Height="88" Stretch="Uniform"
+                               RenderOptions.BitmapInterpolationMode="None"
+                               HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                    <Border Grid.Column="2" Classes="preview" MinHeight="120">
+                        <Image Name="TextureImage" Source="{Binding TexturePreview}" MaxWidth="128" MaxHeight="128"
+                               Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                    </Border>
+                </Grid>
+                <ItemsControl ItemsSource="{Binding Details}" Grid.IsSharedSizeScope="True">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="vm:PropertyRow">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                                    <ColumnDefinition Width="12" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Classes="label" Text="{Binding Label}" />
+                                <SelectableTextBlock Grid.Column="2" Text="{Binding Value}" TextWrapping="Wrap" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <StackPanel Orientation="Horizontal" Spacing="12" IsVisible="{Binding RadarBrush, Converter={x:Static ObjectConverters.IsNotNull}}">
+                    <TextBlock Classes="label" VerticalAlignment="Center" Text="{x:Static r:LandTilesStrings.RadarColor}" />
+                    <Border Width="48" Height="20" CornerRadius="3" Background="{Binding RadarBrush}"
+                            BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1" />
+                    <SelectableTextBlock VerticalAlignment="Center" Text="{Binding RadarText}" />
+                </StackPanel>
+                <TextBlock Classes="label" Text="{x:Static r:Strings.Flags}" />
+                <ItemsControl ItemsSource="{Binding SelectedFlags}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate x:DataType="x:String">
+                            <Border Classes="chip">
+                                <TextBlock Text="{Binding}" />
+                            </Border>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+
+        <TextBlock Grid.Row="2" Grid.ColumnSpan="3" Classes="status" Text="{Binding Summary}" />
+    </Grid>
+</UserControl>

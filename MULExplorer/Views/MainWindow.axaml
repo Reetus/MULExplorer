@@ -1,0 +1,100 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MULExplorer.ViewModels"
+        xmlns:tabs="using:MULExplorer.ViewModels.Tabs"
+        xmlns:tv="using:MULExplorer.Views.Tabs"
+        xmlns:r="using:MULExplorer.Resources"
+        x:Class="MULExplorer.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="{x:Static r:Strings.AppTitle}"
+        Width="1280" Height="800" MinWidth="800" MinHeight="500"
+        Icon="/Assets/mulexplorer-256.png"
+        Background="Transparent">
+
+    <!-- One template per tab: view-model type to view, resolved by compiled bindings (no reflection). -->
+    <Window.DataTemplates>
+        <DataTemplate DataType="tabs:MultisViewModel"><tv:MultisView /></DataTemplate>
+        <DataTemplate DataType="tabs:AnimationsViewModel"><tv:AnimationsView /></DataTemplate>
+        <DataTemplate DataType="tabs:ItemsViewModel"><tv:ItemsView /></DataTemplate>
+        <DataTemplate DataType="tabs:LandTilesViewModel"><tv:LandTilesView /></DataTemplate>
+        <DataTemplate DataType="tabs:TexturesViewModel"><tv:TexturesView /></DataTemplate>
+        <DataTemplate DataType="tabs:GumpsViewModel"><tv:GumpsView /></DataTemplate>
+        <DataTemplate DataType="tabs:SoundsViewModel"><tv:SoundsView /></DataTemplate>
+        <DataTemplate DataType="tabs:HuesViewModel"><tv:HuesView /></DataTemplate>
+        <DataTemplate DataType="tabs:FontsViewModel"><tv:FontsView /></DataTemplate>
+        <DataTemplate DataType="tabs:ClilocViewModel"><tv:ClilocView /></DataTemplate>
+        <DataTemplate DataType="tabs:MapViewModel"><tv:MapView /></DataTemplate>
+        <DataTemplate DataType="tabs:LightViewModel"><tv:LightView /></DataTemplate>
+        <DataTemplate DataType="tabs:SpeechViewModel"><tv:SpeechView /></DataTemplate>
+        <DataTemplate DataType="tabs:SkillsViewModel"><tv:SkillsView /></DataTemplate>
+        <DataTemplate DataType="tabs:AnimDataViewModel"><tv:AnimDataView /></DataTemplate>
+        <DataTemplate DataType="tabs:MultiMapViewModel"><tv:MultiMapView /></DataTemplate>
+        <DataTemplate DataType="tabs:DressViewModel"><tv:DressView /></DataTemplate>
+        <DataTemplate DataType="tabs:TileDataViewModel"><tv:TileDataView /></DataTemplate>
+        <DataTemplate DataType="tabs:RadarColorViewModel"><tv:RadarColorView /></DataTemplate>
+        <DataTemplate DataType="tabs:SkillGrpViewModel"><tv:SkillGrpView /></DataTemplate>
+        <DataTemplate DataType="tabs:VerdataViewModel"><tv:VerdataView /></DataTemplate>
+    </Window.DataTemplates>
+
+    <!-- Tinted over the system backdrop; MainWindow.axaml.cs swaps to the solid brush when no backdrop is active. -->
+    <Panel Name="Root">
+        <DockPanel>
+            <Menu DockPanel.Dock="Top">
+                <MenuItem Header="{x:Static r:Strings.MenuFile}">
+                    <MenuItem Name="SetFolderMenu" Header="{x:Static r:Strings.MenuSetFolder}" Click="OnSetFolder" />
+                    <MenuItem Header="{x:Static r:Strings.MenuReload}" Command="{Binding ReloadCommand}" />
+                    <Separator />
+                    <MenuItem Header="{x:Static r:Strings.MenuExit}" Click="OnExit" />
+                </MenuItem>
+                <MenuItem Header="{x:Static r:Strings.MenuView}">
+                    <MenuItem Header="{x:Static r:Strings.MenuTheme}">
+                        <MenuItem Header="{x:Static r:Strings.MenuThemeDark}" Command="{Binding SetThemeCommand}" CommandParameter="Dark" />
+                        <MenuItem Header="{x:Static r:Strings.MenuThemeLight}" Command="{Binding SetThemeCommand}" CommandParameter="Light" />
+                        <MenuItem Header="{x:Static r:Strings.MenuThemeSystem}" Command="{Binding SetThemeCommand}" CommandParameter="Default" />
+                    </MenuItem>
+                    <MenuItem Header="{x:Static r:Strings.MenuBackdrop}">
+                        <MenuItem Header="{x:Static r:Strings.MenuBackdropMica}" Command="{Binding SetBackdropCommand}" CommandParameter="Mica" />
+                        <MenuItem Header="{x:Static r:Strings.MenuBackdropAcrylic}" Command="{Binding SetBackdropCommand}" CommandParameter="Acrylic" />
+                        <MenuItem Header="{x:Static r:Strings.MenuBackdropSolid}" Command="{Binding SetBackdropCommand}" CommandParameter="Solid" />
+                    </MenuItem>
+                </MenuItem>
+                <MenuItem Header="{x:Static r:Strings.MenuMcp}">
+                    <MenuItem Header="{x:Static r:Strings.MenuMcpStart}" Command="{Binding StartMcpCommand}" />
+                    <MenuItem Header="{x:Static r:Strings.MenuMcpStop}" Command="{Binding StopMcpCommand}" />
+                    <MenuItem Header="{x:Static r:Strings.MenuMcpCopyUrl}" Click="OnCopyMcpUrl" />
+                </MenuItem>
+                <MenuItem Header="{x:Static r:Strings.MenuHelp}">
+                    <MenuItem Header="{x:Static r:Strings.MenuRestartToUpdate}" Command="{Binding RestartToUpdateCommand}" IsVisible="{Binding IsUpdateReady}" />
+                    <MenuItem Header="{x:Static r:Strings.MenuAbout}" Click="OnAbout" />
+                </MenuItem>
+            </Menu>
+
+            <Border DockPanel.Dock="Bottom" Classes="statusbar">
+                <Grid ColumnDefinitions="*,Auto,Auto">
+                    <TextBlock Name="FolderStatusText" Text="{Binding FolderStatus}" TextTrimming="CharacterEllipsis" />
+                    <TextBlock Grid.Column="1" Name="UpdateStatusText" Text="{Binding UpdateReadyText}" IsVisible="{Binding IsUpdateReady}" />
+                    <TextBlock Grid.Column="2" Name="McpStatusText" Text="{Binding McpStatus}" />
+                </Grid>
+            </Border>
+
+            <TabControl Name="Tabs" ItemsSource="{Binding Tabs}" SelectedItem="{Binding SelectedTab}">
+                <TabControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:TabViewModel">
+                        <TextBlock Text="{Binding Header}" />
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.ContentTemplate>
+                    <DataTemplate x:DataType="vm:TabViewModel">
+                        <Panel>
+                            <ContentControl Content="{Binding}" />
+                            <Border Classes="overlay" IsVisible="{Binding ErrorMessage, Converter={x:Static ObjectConverters.IsNotNull}}">
+                                <TextBlock Classes="placeholder" Text="{Binding ErrorMessage}" />
+                            </Border>
+                            <ProgressBar IsIndeterminate="True" IsVisible="{Binding IsBusy}" VerticalAlignment="Top" />
+                        </Panel>
+                    </DataTemplate>
+                </TabControl.ContentTemplate>
+            </TabControl>
+        </DockPanel>
+    </Panel>
+</Window>

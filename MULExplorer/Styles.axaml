@@ -1,0 +1,67 @@
+<Styles xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- 21 tabs: keep headers small so they wrap into two rows like UOFiddler. -->
+    <Style Selector="TabControl">
+        <Setter Property="Padding" Value="0" />
+    </Style>
+    <Style Selector="TabControl /template/ ItemsPresenter#PART_ItemsPresenter">
+        <Setter Property="ItemsPanel">
+            <ItemsPanelTemplate>
+                <WrapPanel />
+            </ItemsPanelTemplate>
+        </Setter>
+    </Style>
+    <Style Selector="TabItem">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="MinHeight" Value="30" />
+        <Setter Property="Padding" Value="10,4" />
+    </Style>
+
+    <Style Selector="TextBlock.placeholder">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="Opacity" Value="0.7" />
+        <Setter Property="Margin" Value="24" />
+    </Style>
+
+    <Style Selector="TextBlock.label">
+        <Setter Property="Opacity" Value="0.7" />
+        <Setter Property="VerticalAlignment" Value="Top" />
+    </Style>
+
+    <Style Selector="TextBlock.status">
+        <Setter Property="Margin" Value="6,2" />
+        <Setter Property="Opacity" Value="0.8" />
+    </Style>
+
+    <Style Selector="Border.overlay">
+        <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundAltHighBrush}" />
+    </Style>
+
+    <Style Selector="Border.statusbar">
+        <Setter Property="Background" Value="{DynamicResource PanelTintBrush}" />
+        <Setter Property="Padding" Value="8,3" />
+    </Style>
+    <Style Selector="Border.statusbar TextBlock">
+        <Setter Property="FontSize" Value="12" />
+        <Setter Property="Margin" Value="0,0,12,0" />
+    </Style>
+
+    <!-- Checkerboard-free neutral backdrop so transparent art edges are visible in both themes. -->
+    <Style Selector="Border.preview">
+        <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}" />
+        <Setter Property="BorderBrush" Value="{DynamicResource SystemControlForegroundBaseLowBrush}" />
+        <Setter Property="BorderThickness" Value="1" />
+        <Setter Property="CornerRadius" Value="4" />
+        <Setter Property="Padding" Value="8" />
+    </Style>
+
+    <Style Selector="Border.chip">
+        <Setter Property="Background" Value="{DynamicResource SystemControlBackgroundBaseLowBrush}" />
+        <Setter Property="CornerRadius" Value="3" />
+        <Setter Property="Padding" Value="6,2" />
+        <Setter Property="Margin" Value="0,0,4,4" />
+    </Style>
+</Styles>

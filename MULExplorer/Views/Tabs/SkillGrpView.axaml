@@ -1,0 +1,57 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MULExplorer.ViewModels.Tabs"
+             xmlns:r="using:MULExplorer.Resources"
+             x:Class="MULExplorer.Views.Tabs.SkillGrpView"
+             x:DataType="vm:SkillGrpViewModel">
+    <UserControl.Styles>
+        <Style Selector="TreeViewItem" x:DataType="vm:SkillTreeNode">
+            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+        </Style>
+        <Style Selector="TextBlock.group">
+            <Setter Property="FontWeight" Value="SemiBold" />
+        </Style>
+        <Style Selector="TextBlock.misc">
+            <Setter Property="Foreground" Value="{DynamicResource SystemControlForegroundAccentBrush}" />
+        </Style>
+    </UserControl.Styles>
+    <Grid ColumnDefinitions="*,6,320" RowDefinitions="Auto,*,Auto">
+        <StackPanel Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="12" Margin="6">
+            <TextBox Name="SearchBox" Width="260" PlaceholderText="{x:Static r:SkillGrpStrings.SearchWatermark}"
+                     Text="{Binding SearchText}" />
+        </StackPanel>
+
+        <TreeView Name="GroupTree" Grid.Row="1" ItemsSource="{Binding Roots}" SelectedItem="{Binding SelectedNode}">
+            <TreeView.ItemTemplate>
+                <TreeDataTemplate DataType="vm:SkillTreeNode" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Text="{Binding Text}" Classes.misc="{Binding IsMisc}" Classes.group="{Binding IsGroup}" />
+                        <TextBlock Text="{Binding Badge}" Opacity="0.6" />
+                    </StackPanel>
+                </TreeDataTemplate>
+            </TreeView.ItemTemplate>
+        </TreeView>
+
+        <GridSplitter Grid.Row="1" Grid.Column="1" ResizeDirection="Columns" />
+
+        <ScrollViewer Grid.Row="1" Grid.Column="2">
+            <ItemsControl Margin="8" ItemsSource="{Binding Details}" Grid.IsSharedSizeScope="True">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="vm:PropertyRow">
+                        <Grid Margin="0,1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                                <ColumnDefinition Width="12" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Classes="label" Text="{Binding Label}" />
+                            <SelectableTextBlock Grid.Column="2" Text="{Binding Value}" TextWrapping="Wrap" />
+                        </Grid>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+
+        <TextBlock Grid.Row="2" Grid.ColumnSpan="3" Classes="status" Text="{Binding Summary}" />
+    </Grid>
+</UserControl>

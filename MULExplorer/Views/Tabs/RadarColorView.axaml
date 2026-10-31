@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MULExplorer.ViewModels.Tabs"
+             xmlns:r="using:MULExplorer.Resources"
+             x:Class="MULExplorer.Views.Tabs.RadarColorView"
+             x:DataType="vm:RadarColorViewModel">
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="vm:RadarRow">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+                <Border Width="28" Height="14" CornerRadius="2" Background="{Binding Swatch}" VerticalAlignment="Center"
+                        BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1" />
+                <TextBlock Text="{Binding Label}" TextTrimming="CharacterEllipsis" />
+            </StackPanel>
+        </DataTemplate>
+    </UserControl.DataTemplates>
+
+    <Grid ColumnDefinitions="*,6,340" RowDefinitions="*,Auto">
+        <TabControl Name="Views" SelectedIndex="{Binding ViewIndex}">
+            <TabItem Header="{x:Static r:RadarColorStrings.Items}">
+                <Grid RowDefinitions="Auto,*">
+                    <TextBox Name="ItemSearchBox" Margin="6" PlaceholderText="{x:Static r:Strings.SearchWatermark}"
+                             Text="{Binding ItemSearch}" />
+                    <ListBox Name="ItemList" Grid.Row="1" ItemsSource="{Binding VisibleItems}"
+                             SelectedItem="{Binding SelectedItem}" />
+                </Grid>
+            </TabItem>
+            <TabItem Header="{x:Static r:RadarColorStrings.Land}">
+                <Grid RowDefinitions="Auto,*">
+                    <TextBox Name="LandSearchBox" Margin="6" PlaceholderText="{x:Static r:Strings.SearchWatermark}"
+                             Text="{Binding LandSearch}" />
+                    <ListBox Name="LandList" Grid.Row="1" ItemsSource="{Binding VisibleLand}"
+                             SelectedItem="{Binding SelectedLand}" />
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
+
+        <ScrollViewer Grid.Column="2">
+            <StackPanel Margin="8" Spacing="10">
+                <SelectableTextBlock FontWeight="SemiBold" TextWrapping="Wrap" Text="{Binding SelectionTitle}" />
+                <TextBlock Classes="label" Text="{x:Static r:RadarColorStrings.Art}" />
+                <Border Classes="preview" MinHeight="140">
+                    <Image Name="ArtImage" Source="{Binding ArtPreview}" Stretch="None"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <TextBlock Classes="label" Text="{x:Static r:RadarColorStrings.ColorPreview}" />
+                <Border Name="ColorSwatch" Height="80" CornerRadius="4" Background="{Binding ColorBrush}"
+                        BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}" BorderThickness="1" />
+                <TextBlock Classes="label" Text="{x:Static r:RadarColorStrings.ColorValue}" />
+                <Grid ColumnDefinitions="Auto,12,*" RowDefinitions="Auto,Auto,Auto">
+                    <TextBlock Classes="label" Text="{x:Static r:RadarColorStrings.Hex}" />
+                    <SelectableTextBlock Grid.Column="2" Text="{Binding ColorHex}" />
+                    <TextBlock Grid.Row="1" Classes="label" Text="{x:Static r:RadarColorStrings.Rgb5}" />
+                    <SelectableTextBlock Grid.Row="1" Grid.Column="2" Text="{Binding ColorRgb5}" />
+                    <TextBlock Grid.Row="2" Classes="label" Text="{x:Static r:RadarColorStrings.Rgb8}" />
+                    <SelectableTextBlock Grid.Row="2" Grid.Column="2" Text="{Binding ColorRgb8}" />
+                </Grid>
+            </StackPanel>
+        </ScrollViewer>
+
+        <TextBlock Grid.Row="1" Grid.ColumnSpan="3" Classes="status" Text="{Binding Summary}" />
+    </Grid>
+</UserControl>

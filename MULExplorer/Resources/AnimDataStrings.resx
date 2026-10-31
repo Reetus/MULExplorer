@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Preview" xml:space="preserve"><value>Preview</value></data>
+  <data name="Data" xml:space="preserve"><value>Data</value></data>
+  <data name="Frames" xml:space="preserve"><value>Frames</value></data>
+  <data name="FrameCount" xml:space="preserve"><value>Frame count</value></data>
+  <data name="FrameDelay" xml:space="preserve"><value>Frame delay</value></data>
+  <data name="StartDelay" xml:space="preserve"><value>Start delay</value></data>
+  <data name="Unknown" xml:space="preserve"><value>Unknown</value></data>
+  <data name="FrameOffset" xml:space="preserve"><value>Offset</value></data>
+  <data name="FrameItem" xml:space="preserve"><value>Item</value></data>
+  <data name="Animate" xml:space="preserve"><value>Animate</value></data>
+  <data name="DelayValue" xml:space="preserve"><value>{0} ({1} ms)</value></data>
+  <data name="ItemsShown" xml:space="preserve"><value>{0:N0} of {1:N0} animated items</value></data>
+  <data name="CurrentFrame" xml:space="preserve"><value>Frame {0} of {1}</value></data>
+</root>

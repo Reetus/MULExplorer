@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="GroupMonsters" xml:space="preserve"><value>Monsters</value></data>
+  <data name="GroupSea" xml:space="preserve"><value>Sea</value></data>
+  <data name="GroupAnimals" xml:space="preserve"><value>Animals</value></data>
+  <data name="GroupHumans" xml:space="preserve"><value>Humans</value></data>
+  <data name="GroupEquipment" xml:space="preserve"><value>Equipment</value></data>
+  <data name="TabAnimation" xml:space="preserve"><value>Animation</value></data>
+  <data name="TabThumbnails" xml:space="preserve"><value>Thumbnail List</value></data>
+  <data name="Action" xml:space="preserve"><value>Action</value></data>
+  <data name="Direction" xml:space="preserve"><value>Direction</value></data>
+  <data name="Frame" xml:space="preserve"><value>Frame</value></data>
+  <data name="Frames" xml:space="preserve"><value>Frames</value></data>
+  <data name="Animate" xml:space="preserve"><value>Animate</value></data>
+  <data name="ShowFrameBounds" xml:space="preserve"><value>Show frame bounds</value></data>
+  <data name="Graphic" xml:space="preserve"><value>Graphic</value></data>
+  <data name="BaseGraphic" xml:space="preserve"><value>Base graphic</value></data>
+  <data name="Source" xml:space="preserve"><value>Source</value></data>
+  <data name="Type" xml:space="preserve"><value>Type</value></data>
+  <data name="MobFlags" xml:space="preserve"><value>mobtypes flags</value></data>
+  <data name="BodyDef" xml:space="preserve"><value>Body.def</value></data>
+  <data name="FrameSize" xml:space="preserve"><value>Frame size</value></data>
+  <data name="Center" xml:space="preserve"><value>Center</value></data>
+  <data name="StatusGraphic" xml:space="preserve"><value>Graphic: {0}</value></data>
+  <data name="StatusBaseGraphic" xml:space="preserve"><value>Base graphic: {0}</value></data>
+  <data name="StatusHue" xml:space="preserve"><value>Hue: {0}</value></data>
+  <data name="BodiesShown" xml:space="preserve"><value>{0:N0} of {1:N0} bodies</value></data>
+  <data name="Dir0" xml:space="preserve"><value>Down</value></data>
+  <data name="Dir1" xml:space="preserve"><value>Down-left</value></data>
+  <data name="Dir2" xml:space="preserve"><value>Left</value></data>
+  <data name="Dir3" xml:space="preserve"><value>Up-left</value></data>
+  <data name="Dir4" xml:space="preserve"><value>Up</value></data>
+  <data name="Dir5" xml:space="preserve"><value>Up-right</value></data>
+  <data name="Dir6" xml:space="preserve"><value>Right</value></data>
+  <data name="Dir7" xml:space="preserve"><value>Down-right</value></data>
+  <data name="DirectionValue" xml:space="preserve"><value>{0} ({1})</value></data>
+  <data name="NoAnimation" xml:space="preserve"><value>This body has no animation.</value></data>
+</root>

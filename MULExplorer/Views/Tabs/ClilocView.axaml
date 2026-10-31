@@ -1,0 +1,82 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MULExplorer.ViewModels.Tabs"
+             xmlns:l="using:UODataAccess.Loaders"
+             xmlns:r="using:MULExplorer.Resources"
+             x:Class="MULExplorer.Views.Tabs.ClilocView"
+             x:DataType="vm:ClilocViewModel">
+    <Grid ColumnDefinitions="*,6,360" RowDefinitions="Auto,Auto,*,Auto">
+        <!-- Toolbar (UOFiddler: language, goto, find, regex) -->
+        <WrapPanel Grid.ColumnSpan="3" Margin="6">
+            <TextBlock VerticalAlignment="Center" Margin="0,0,8,0" Text="{x:Static r:ClilocStrings.Language}" />
+            <ComboBox Name="LanguageBox" Width="100" Margin="0,0,16,0" ItemsSource="{Binding Languages}" SelectedItem="{Binding SelectedLanguage}" />
+            <TextBox Name="GoToBox" Width="130" PlaceholderText="{x:Static r:ClilocStrings.GoToWatermark}" Text="{Binding GoToText}">
+                <TextBox.KeyBindings>
+                    <KeyBinding Gesture="Enter" Command="{Binding GoToCommand}" />
+                </TextBox.KeyBindings>
+            </TextBox>
+            <Button Name="GoToButton" Margin="4,0,16,0" Content="{x:Static r:ClilocStrings.GoTo}" Command="{Binding GoToCommand}" />
+            <TextBlock VerticalAlignment="Center" Margin="0,0,8,0" Text="{x:Static r:ClilocStrings.Find}" />
+            <TextBox Name="SearchBox" Width="260" PlaceholderText="{x:Static r:ClilocStrings.FindWatermark}" Text="{Binding SearchText}" />
+            <CheckBox Name="RegexBox" Margin="8,0,0,0" Content="{x:Static r:ClilocStrings.UseRegex}" IsChecked="{Binding UseRegex}" />
+        </WrapPanel>
+
+        <!-- Header -->
+        <Grid Grid.Row="1" ColumnDefinitions="100,*" Margin="6,0,18,2">
+            <TextBlock Classes="label" Text="{x:Static r:ClilocStrings.ColumnNumber}" />
+            <TextBlock Grid.Column="1" Classes="label" Text="{x:Static r:ClilocStrings.ColumnText}" />
+        </Grid>
+
+        <!-- Entries: ListBox virtualizes (VirtualizingStackPanel), so 100k rows stay cheap. -->
+        <ListBox Name="EntryList" Grid.Row="2" ItemsSource="{Binding VisibleEntries}" SelectedIndex="{Binding SelectedIndex}">
+            <ListBox.Styles>
+                <Style Selector="ListBoxItem">
+                    <Setter Property="Padding" Value="6,2" />
+                    <Setter Property="MinHeight" Value="0" />
+                </Style>
+            </ListBox.Styles>
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="l:ClilocEntry">
+                    <Grid ColumnDefinitions="100,*">
+                        <TextBlock Text="{Binding Number}" />
+                        <TextBlock Grid.Column="1" Text="{Binding Text}" TextTrimming="CharacterEllipsis" MaxLines="1" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <GridSplitter Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" ResizeDirection="Columns" />
+
+        <!-- Selected entry -->
+        <ScrollViewer Grid.Row="1" Grid.RowSpan="2" Grid.Column="2">
+            <StackPanel Margin="8" Spacing="8">
+                <ItemsControl ItemsSource="{Binding Details}" Grid.IsSharedSizeScope="True">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="vm:PropertyRow">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                                    <ColumnDefinition Width="12" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Classes="label" Text="{Binding Label}" />
+                                <SelectableTextBlock Grid.Column="2" Text="{Binding Value}" TextWrapping="Wrap" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+                <TextBlock Classes="label" Text="{x:Static r:ClilocStrings.Text}" />
+                <Border Classes="preview">
+                    <SelectableTextBlock Name="SelectedTextBlock" Text="{Binding SelectedText}" TextWrapping="Wrap" />
+                </Border>
+            </StackPanel>
+        </ScrollViewer>
+
+        <Border Grid.Row="3" Grid.ColumnSpan="3" Classes="statusbar">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding Summary}" />
+                <TextBlock Text="{Binding Message}" Foreground="{DynamicResource SystemControlErrorTextForegroundBrush}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>

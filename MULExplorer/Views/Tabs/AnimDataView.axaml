@@ -1,0 +1,88 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MULExplorer.ViewModels.Tabs"
+             xmlns:r="using:MULExplorer.Resources"
+             x:Class="MULExplorer.Views.Tabs.AnimDataView"
+             x:DataType="vm:AnimDataViewModel">
+    <Grid ColumnDefinitions="300,6,*" RowDefinitions="*,Auto">
+        <!-- Animated items -->
+        <DockPanel Margin="6,6,0,6">
+            <TextBox Name="SearchBox" DockPanel.Dock="Top" Margin="0,0,0,6"
+                     PlaceholderText="{x:Static r:Strings.SearchWatermark}" Text="{Binding SearchText}" />
+            <ListBox Name="EntryList" ItemsSource="{Binding VisibleEntries}" SelectedItem="{Binding SelectedEntry}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="vm:AnimDataRow">
+                        <TextBlock Text="{Binding Label}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+        <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
+
+        <Grid Grid.Column="2" ColumnDefinitions="*,6,*" RowDefinitions="Auto,*" Margin="0,6,6,6">
+            <!-- Preview -->
+            <StackPanel Spacing="6">
+                <TextBlock Classes="label" Text="{x:Static r:AnimDataStrings.Preview}" />
+                <Border Classes="preview" MinHeight="220">
+                    <Image Name="PreviewImage" Source="{Binding Preview}" Stretch="Uniform" StretchDirection="DownOnly"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+                <StackPanel Orientation="Horizontal" Spacing="12">
+                    <CheckBox Name="AnimateBox" Content="{x:Static r:AnimDataStrings.Animate}" IsChecked="{Binding IsPlaying}" />
+                    <TextBlock VerticalAlignment="Center" Text="{Binding FrameLabel}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="6">
+                    <TextBlock VerticalAlignment="Center" Text="{x:Static r:Strings.Hue}" />
+                    <NumericUpDown Name="HueBox" Width="130" Minimum="0" Maximum="3000" Increment="1" FormatString="0"
+                                   Value="{Binding PreviewHue}" />
+                </StackPanel>
+            </StackPanel>
+
+            <!-- Data -->
+            <StackPanel Grid.Column="2" Spacing="6">
+                <TextBlock Classes="label" Text="{x:Static r:AnimDataStrings.Data}" />
+                <ItemsControl ItemsSource="{Binding Details}" Grid.IsSharedSizeScope="True">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="vm:PropertyRow">
+                            <Grid Margin="0,0,0,4">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                                    <ColumnDefinition Width="12" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Classes="label" Text="{Binding Label}" />
+                                <SelectableTextBlock Grid.Column="2" Text="{Binding Value}" TextWrapping="Wrap" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+
+            <!-- Frames -->
+            <DockPanel Grid.Row="1" Grid.ColumnSpan="3" Margin="0,10,0,0">
+                <Grid DockPanel.Dock="Top" ColumnDefinitions="50,70,70,*" Margin="12,0,0,4">
+                    <TextBlock Classes="label" Text="#" />
+                    <TextBlock Grid.Column="1" Classes="label" Text="{x:Static r:AnimDataStrings.FrameOffset}" />
+                    <TextBlock Grid.Column="3" Classes="label" Text="{x:Static r:AnimDataStrings.FrameItem}" />
+                </Grid>
+                <ListBox Name="FrameList" ItemsSource="{Binding Frames}" SelectedIndex="{Binding FrameIndex}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="vm:AnimDataFrameRow">
+                            <Grid ColumnDefinitions="50,70,70,*">
+                                <TextBlock VerticalAlignment="Center" Text="{Binding Index}" />
+                                <TextBlock Grid.Column="1" VerticalAlignment="Center" Text="{Binding Offset}" />
+                                <Image Grid.Column="2" Source="{Binding Image}" Width="56" Height="44" Stretch="Uniform" StretchDirection="DownOnly" />
+                                <TextBlock Grid.Column="3" VerticalAlignment="Center" Text="{Binding ItemLabel}" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+        </Grid>
+
+        <Border Grid.Row="1" Grid.ColumnSpan="3" Classes="statusbar">
+            <TextBlock Text="{Binding Summary}" />
+        </Border>
+    </Grid>
+</UserControl>

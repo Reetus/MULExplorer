@@ -1,0 +1,69 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MULExplorer.ViewModels.Tabs"
+             xmlns:r="using:MULExplorer.Resources"
+             x:Class="MULExplorer.Views.Tabs.VerdataView"
+             x:DataType="vm:VerdataViewModel">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Notice: no verdata.mul, no patches, or a truncated table. -->
+        <Border Name="NoticeBox" Classes="preview" Margin="6" IsVisible="{Binding Message, Converter={x:Static ObjectConverters.IsNotNull}}">
+            <TextBlock Name="NoticeText" Text="{Binding Message}" TextWrapping="Wrap" />
+        </Border>
+
+        <Grid Grid.Row="1" ColumnDefinitions="220,6,200,6,*" IsVisible="{Binding IsPresent}">
+            <DockPanel Margin="6,0,0,0">
+                <TextBlock DockPanel.Dock="Top" Classes="label" Margin="0,4" Text="{x:Static r:VerdataStrings.PatchType}" />
+                <ListBox Name="TypeList" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedGroup}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="vm:VerdataTypeGroup">
+                            <TextBlock Text="{Binding Text}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+
+            <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
+
+            <DockPanel Grid.Column="2">
+                <TextBlock DockPanel.Dock="Top" Classes="label" Margin="0,4" Text="{Binding PatchCount}" />
+                <ListBox Name="PatchList" ItemsSource="{Binding VisiblePatches}" SelectedItem="{Binding SelectedPatch}">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate DataType="vm:VerdataPatchRow">
+                            <TextBlock Text="{Binding Text}" />
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </DockPanel>
+
+            <GridSplitter Grid.Column="3" ResizeDirection="Columns" />
+
+            <ScrollViewer Grid.Column="4">
+                <StackPanel Margin="8" Spacing="8">
+                    <ItemsControl ItemsSource="{Binding Details}" Grid.IsSharedSizeScope="True">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate DataType="vm:PropertyRow">
+                                <Grid Margin="0,1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                                        <ColumnDefinition Width="12" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Classes="label" Text="{Binding Label}" />
+                                    <SelectableTextBlock Grid.Column="2" Text="{Binding Value}" TextWrapping="Wrap" />
+                                </Grid>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <TextBlock Classes="label" Text="{x:Static r:VerdataStrings.Data}"
+                               IsVisible="{Binding SelectedPatch, Converter={x:Static ObjectConverters.IsNotNull}}" />
+                    <Border Classes="preview" IsVisible="{Binding SelectedPatch, Converter={x:Static ObjectConverters.IsNotNull}}">
+                        <SelectableTextBlock Name="HexDumpText" Text="{Binding HexDump}" FontSize="12"
+                                             FontFamily="Cascadia Mono,Consolas,DejaVu Sans Mono,Menlo,monospace" />
+                    </Border>
+                </StackPanel>
+            </ScrollViewer>
+        </Grid>
+
+        <TextBlock Grid.Row="2" Classes="status" Text="{Binding Summary}" />
+    </Grid>
+</UserControl>

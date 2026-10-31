@@ -1,0 +1,76 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MULExplorer.ViewModels.Tabs"
+             xmlns:r="using:MULExplorer.Resources"
+             x:Class="MULExplorer.Views.Tabs.SoundsView"
+             x:DataType="vm:SoundsViewModel">
+    <UserControl.Styles>
+        <Style Selector="ListBox.table ListBoxItem">
+            <Setter Property="Padding" Value="6,2" />
+            <Setter Property="MinHeight" Value="24" />
+        </Style>
+    </UserControl.Styles>
+    <Grid ColumnDefinitions="*,6,340" RowDefinitions="Auto,Auto,*,Auto">
+        <!-- Toolbar -->
+        <StackPanel Grid.ColumnSpan="3" Orientation="Horizontal" Spacing="12" Margin="6">
+            <TextBox Name="SearchBox" Width="260" PlaceholderText="{x:Static r:Strings.SearchWatermark}"
+                     Text="{Binding SearchText}" />
+            <CheckBox Name="SortByNameBox" Content="{x:Static r:SoundsStrings.SortByName}" IsChecked="{Binding SortByName}" />
+        </StackPanel>
+
+        <!-- Column headers -->
+        <Grid Grid.Row="1" ColumnDefinitions="80,*,90" Margin="6,0,6,2">
+            <TextBlock Classes="label" Text="{x:Static r:Strings.Id}" />
+            <TextBlock Grid.Column="1" Classes="label" Text="{x:Static r:Strings.Name}" />
+            <TextBlock Grid.Column="2" Classes="label" Text="{x:Static r:SoundsStrings.Duration}" HorizontalAlignment="Right" />
+        </Grid>
+
+        <ListBox Name="SoundList" Grid.Row="2" Classes="table" ItemsSource="{Binding VisibleSounds}"
+                 SelectedItem="{Binding SelectedSound}" DoubleTapped="OnDoubleTapped">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="vm:SoundRow">
+                    <Grid ColumnDefinitions="80,*,90">
+                        <TextBlock Text="{Binding IdText}" />
+                        <TextBlock Grid.Column="1" Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
+                        <TextBlock Grid.Column="2" Text="{Binding DurationText}" HorizontalAlignment="Right" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <GridSplitter Grid.Row="1" Grid.RowSpan="2" Grid.Column="1" ResizeDirection="Columns" />
+
+        <!-- Current sound -->
+        <ScrollViewer Grid.Row="1" Grid.RowSpan="2" Grid.Column="2">
+            <StackPanel Margin="8" Spacing="10">
+                <TextBlock Classes="label" Text="{x:Static r:SoundsStrings.CurrentSound}" />
+                <StackPanel Orientation="Horizontal" Spacing="8">
+                    <Button Name="PlayButton" Content="{x:Static r:SoundsStrings.Play}" Command="{Binding PlayCommand}"
+                            ToolTip.Tip="{Binding PlayToolTip}" ToolTip.ShowOnDisabled="True" MinWidth="80" />
+                    <Button Name="StopButton" Content="{x:Static r:SoundsStrings.Stop}" Command="{Binding StopCommand}" MinWidth="80" />
+                </StackPanel>
+                <ProgressBar Name="PlaybackBar" Minimum="0" Maximum="1" Value="{Binding Progress}" Height="6" />
+                <TextBlock Text="{Binding PlaybackStatus}" Opacity="0.8" TextTrimming="CharacterEllipsis" />
+                <TextBlock Text="{Binding PlayToolTip}" IsVisible="{Binding PlayToolTip, Converter={x:Static ObjectConverters.IsNotNull}}"
+                           TextWrapping="Wrap" Foreground="{DynamicResource SystemControlErrorTextForegroundBrush}" />
+                <ItemsControl ItemsSource="{Binding Details}" Grid.IsSharedSizeScope="True">
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="vm:PropertyRow">
+                            <Grid Margin="0,1">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                                    <ColumnDefinition Width="12" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Classes="label" Text="{Binding Label}" />
+                                <SelectableTextBlock Grid.Column="2" Text="{Binding Value}" TextWrapping="Wrap" />
+                            </Grid>
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </StackPanel>
+        </ScrollViewer>
+
+        <TextBlock Grid.Row="3" Grid.ColumnSpan="3" Classes="status" Text="{Binding Summary}" />
+    </Grid>
+</UserControl>

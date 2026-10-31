@@ -1,0 +1,102 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MULExplorer.ViewModels.Tabs"
+             xmlns:r="using:MULExplorer.Resources"
+             x:Class="MULExplorer.Views.Tabs.DressView"
+             x:DataType="vm:DressViewModel">
+    <Grid ColumnDefinitions="300,6,260,6,*" RowDefinitions="*,Auto">
+        <!-- Wearable items -->
+        <DockPanel Margin="6,6,0,6">
+            <TextBlock DockPanel.Dock="Top" Classes="label" Margin="0,0,0,4" Text="{x:Static r:DressStrings.Items}" />
+            <TextBox Name="SearchBox" DockPanel.Dock="Top" Margin="0,0,0,6"
+                     PlaceholderText="{x:Static r:Strings.SearchWatermark}" Text="{Binding SearchText}" />
+            <ListBox Name="ItemList" ItemsSource="{Binding VisibleWearables}" SelectedItem="{Binding SelectedWearable}"
+                     DoubleTapped="OnItemDoubleTapped">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="vm:WearableRow">
+                        <TextBlock Text="{Binding Label}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+        <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
+
+        <!-- Body + worn items -->
+        <DockPanel Grid.Column="2" Margin="0,6,0,6">
+            <StackPanel DockPanel.Dock="Top" Spacing="6">
+                <TextBlock Classes="label" Text="{x:Static r:DressStrings.Body}" />
+                <ComboBox Name="BodyBox" HorizontalAlignment="Stretch" ItemsSource="{Binding BodyChoices}"
+                          SelectedItem="{Binding SelectedBodyChoice}">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate DataType="vm:DressBodyChoice">
+                            <TextBlock Text="{Binding Label}" />
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+                <Grid ColumnDefinitions="Auto,8,*" RowDefinitions="Auto,6,Auto">
+                    <TextBlock VerticalAlignment="Center" Text="{x:Static r:DressStrings.BodyHue}" />
+                    <NumericUpDown Grid.Column="2" Minimum="0" Maximum="3000" Increment="1" FormatString="0" Value="{Binding BodyHue}" />
+                    <TextBlock Grid.Row="2" VerticalAlignment="Center" Text="{x:Static r:DressStrings.ItemHue}" />
+                    <NumericUpDown Grid.Row="2" Grid.Column="2" Minimum="0" Maximum="3000" Increment="1" FormatString="0" Value="{Binding ItemHue}" />
+                </Grid>
+                <Button Name="DressButton" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                        Content="{x:Static r:DressStrings.Dress}" Command="{Binding DressSelectedCommand}" />
+                <TextBlock Classes="label" Margin="0,6,0,0" Text="{x:Static r:DressStrings.Worn}" />
+            </StackPanel>
+            <StackPanel DockPanel.Dock="Bottom" Spacing="6" Margin="0,6,0,0">
+                <Grid ColumnDefinitions="*,6,*">
+                    <Button HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                            Content="{x:Static r:DressStrings.Undress}" Command="{Binding UndressSelectedCommand}" />
+                    <Button Grid.Column="2" HorizontalAlignment="Stretch" HorizontalContentAlignment="Center"
+                            Content="{x:Static r:DressStrings.UndressAll}" Command="{Binding UndressAllCommand}" />
+                </Grid>
+                <TextBlock Classes="label" TextWrapping="Wrap" FontSize="12" Text="{x:Static r:DressStrings.Hint}" />
+            </StackPanel>
+            <ListBox Name="WornList" ItemsSource="{Binding Worn}" SelectedItem="{Binding SelectedWorn}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="vm:WornRow">
+                        <TextBlock Text="{Binding Label}" TextWrapping="Wrap" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </DockPanel>
+
+        <GridSplitter Grid.Column="3" ResizeDirection="Columns" />
+
+        <!-- Previews -->
+        <Grid Grid.Column="4" ColumnDefinitions="*,6,*" RowDefinitions="Auto,*,Auto" Margin="0,6,6,6">
+            <TextBlock Classes="label" Margin="0,0,0,4" Text="{x:Static r:DressStrings.Paperdoll}" />
+            <Border Grid.Row="1" Classes="preview">
+                <Image Name="PaperdollImage" Source="{Binding Paperdoll}" Stretch="Uniform" StretchDirection="DownOnly"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+
+            <TextBlock Grid.Column="2" Classes="label" Margin="0,0,0,4" Text="{x:Static r:DressStrings.Figure}" />
+            <Border Grid.Row="1" Grid.Column="2" Classes="preview">
+                <Image Name="FigureImage" Source="{Binding Figure}" Stretch="Uniform" StretchDirection="DownOnly"
+                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+            </Border>
+
+            <StackPanel Grid.Row="2" Grid.Column="2" Spacing="4" Margin="0,6,0,0">
+                <Grid ColumnDefinitions="Auto,8,*,8,Auto">
+                    <TextBlock VerticalAlignment="Center" Text="{x:Static r:DressStrings.Action}" />
+                    <Slider Name="ActionSlider" Grid.Column="2" Minimum="0" Maximum="34" TickFrequency="1" IsSnapToTickEnabled="True"
+                            Value="{Binding Action}" />
+                    <TextBlock Grid.Column="4" VerticalAlignment="Center" MinWidth="150" Text="{Binding ActionLabel}" />
+                </Grid>
+                <Grid ColumnDefinitions="Auto,8,*,8,Auto">
+                    <TextBlock VerticalAlignment="Center" Text="{x:Static r:DressStrings.Direction}" />
+                    <Slider Name="DirectionSlider" Grid.Column="2" Minimum="0" Maximum="7" TickFrequency="1" IsSnapToTickEnabled="True"
+                            TickPlacement="BottomRight" Value="{Binding Direction}" />
+                    <TextBlock Grid.Column="4" VerticalAlignment="Center" MinWidth="150" Text="{Binding DirectionLabel}" />
+                </Grid>
+                <CheckBox Name="AnimateBox" Content="{x:Static r:DressStrings.Animate}" IsChecked="{Binding IsPlaying}" />
+            </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="1" Grid.ColumnSpan="5" Classes="statusbar">
+            <TextBlock Text="{Binding Summary}" />
+        </Border>
+    </Grid>
+</UserControl>

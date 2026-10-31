@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <!-- Trim/AOT analyzers run on every build; violations fail it (TreatWarningsAsErrors). -->
+    <IsAotCompatible>true</IsAotCompatible>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="MULExplorer.Tests" />
+  </ItemGroup>
+  <!-- Reference data shipped with the loaders (JSON, read via source-generated System.Text.Json). -->
+  <ItemGroup>
+    <EmbeddedResource Include="Data\*.json" LogicalName="UODataAccess.Data.%(Filename)%(Extension)" />
+  </ItemGroup>
+</Project>

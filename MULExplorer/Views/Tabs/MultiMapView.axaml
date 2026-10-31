@@ -1,0 +1,40 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MULExplorer.ViewModels.Tabs"
+             xmlns:c="using:MULExplorer.Controls"
+             xmlns:r="using:MULExplorer.Resources"
+             x:Class="MULExplorer.Views.Tabs.MultiMapView"
+             x:DataType="vm:MultiMapViewModel">
+    <Grid RowDefinitions="Auto,*,Auto">
+        <!-- Toolbar (UOFiddler: Load.. menu; Generate/Export are omitted, the viewer is read-only) -->
+        <WrapPanel Orientation="Horizontal" Margin="6,6,6,0">
+            <TextBlock VerticalAlignment="Center" Margin="0,0,6,6" Text="{x:Static r:MultiMapStrings.Image}" />
+            <ComboBox Name="ImageBox" MinWidth="200" Margin="0,0,12,6"
+                      ItemsSource="{Binding Images}" SelectedItem="{Binding SelectedImage}">
+                <ComboBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:MultiMapOption">
+                        <TextBlock Text="{Binding Name}" />
+                    </DataTemplate>
+                </ComboBox.ItemTemplate>
+            </ComboBox>
+            <Button Margin="0,0,4,6" Content="{x:Static r:MultiMapStrings.ZoomOut}" Command="{Binding ZoomOutCommand}" />
+            <Button Margin="0,0,4,6" Content="{x:Static r:MultiMapStrings.ZoomIn}" Command="{Binding ZoomInCommand}" />
+            <Button Margin="0,0,12,6" Content="{x:Static r:MultiMapStrings.ZoomFit}" Command="{Binding ZoomFitCommand}" />
+            <TextBlock Name="SizeText" VerticalAlignment="Center" Margin="0,0,12,6" Text="{Binding SizeText}" />
+        </WrapPanel>
+
+        <c:MapCanvas Name="Canvas" Grid.Row="1"
+                     Source="{Binding Source}"
+                     CenterX="{Binding CenterX}" CenterY="{Binding CenterY}" Zoom="{Binding Zoom}"
+                     MinZoom="0.0625" MaxZoom="8"
+                     HoverPixel="{Binding HoverPixel}" />
+
+        <Border Grid.Row="2" Classes="statusbar">
+            <WrapPanel>
+                <TextBlock Text="{Binding SizeText}" />
+                <TextBlock Text="{Binding CoordsText}" MinWidth="130" />
+                <TextBlock Text="{Binding ZoomText}" />
+            </WrapPanel>
+        </Border>
+    </Grid>
+</UserControl>

@@ -1,0 +1,84 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MULExplorer.ViewModels.Tabs"
+             xmlns:r="using:MULExplorer.Resources"
+             x:Class="MULExplorer.Views.Tabs.TileDataView"
+             x:DataType="vm:TileDataViewModel">
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="vm:TileRow">
+            <TextBlock Text="{Binding Label}" TextTrimming="CharacterEllipsis" />
+        </DataTemplate>
+        <DataTemplate DataType="vm:PropertyRow">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                    <ColumnDefinition Width="12" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <TextBlock Classes="label" Text="{Binding Label}" />
+                <SelectableTextBlock Grid.Column="2" Text="{Binding Value}" TextWrapping="Wrap" />
+            </Grid>
+        </DataTemplate>
+        <!-- Read-only flag list: checkboxes that ignore input but keep full contrast. -->
+        <DataTemplate DataType="vm:FlagRow">
+            <CheckBox Content="{Binding Name}" IsChecked="{Binding IsSet, Mode=OneWay}" Width="150"
+                      IsHitTestVisible="False" Focusable="False" MinHeight="24" Padding="4,0,0,0" />
+        </DataTemplate>
+    </UserControl.DataTemplates>
+    <UserControl.Styles>
+        <Style Selector="ItemsControl.flags">
+            <Setter Property="ItemsPanel">
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </Setter>
+        </Style>
+    </UserControl.Styles>
+
+    <Grid RowDefinitions="*,Auto">
+        <TabControl Name="Views" SelectedIndex="{Binding ViewIndex}">
+            <TabItem Header="{x:Static r:TileDataStrings.Items}">
+                <Grid ColumnDefinitions="300,6,*" RowDefinitions="Auto,*">
+                    <TextBox Name="ItemSearchBox" Margin="6" PlaceholderText="{x:Static r:Strings.SearchWatermark}"
+                             Text="{Binding ItemSearch}" />
+                    <ListBox Name="ItemList" Grid.Row="1" ItemsSource="{Binding VisibleItems}"
+                             SelectedItem="{Binding SelectedItem}" />
+                    <GridSplitter Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" ResizeDirection="Columns" />
+                    <ScrollViewer Grid.Row="0" Grid.RowSpan="2" Grid.Column="2">
+                        <StackPanel Margin="8" Spacing="8">
+                            <Border Classes="preview" MinHeight="140" HorizontalAlignment="Left" MinWidth="200">
+                                <Image Name="ItemImage" Source="{Binding ItemPreview}" Stretch="None"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <ItemsControl ItemsSource="{Binding ItemDetails}" Grid.IsSharedSizeScope="True" />
+                            <TextBlock Classes="label" Text="{x:Static r:Strings.Flags}" />
+                            <ItemsControl Classes="flags" ItemsSource="{Binding ItemFlags}" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{x:Static r:TileDataStrings.Land}">
+                <Grid ColumnDefinitions="300,6,*" RowDefinitions="Auto,*">
+                    <TextBox Name="LandSearchBox" Margin="6" PlaceholderText="{x:Static r:Strings.SearchWatermark}"
+                             Text="{Binding LandSearch}" />
+                    <ListBox Name="LandList" Grid.Row="1" ItemsSource="{Binding VisibleLand}"
+                             SelectedItem="{Binding SelectedLand}" />
+                    <GridSplitter Grid.Row="0" Grid.RowSpan="2" Grid.Column="1" ResizeDirection="Columns" />
+                    <ScrollViewer Grid.Row="0" Grid.RowSpan="2" Grid.Column="2">
+                        <StackPanel Margin="8" Spacing="8">
+                            <Border Classes="preview" MinHeight="80" HorizontalAlignment="Left" MinWidth="200">
+                                <Image Name="LandImage" Source="{Binding LandPreview}" Stretch="None"
+                                       HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <ItemsControl ItemsSource="{Binding LandDetails}" Grid.IsSharedSizeScope="True" />
+                            <TextBlock Classes="label" Text="{x:Static r:Strings.Flags}" />
+                            <ItemsControl Classes="flags" ItemsSource="{Binding LandFlags}" />
+                        </StackPanel>
+                    </ScrollViewer>
+                </Grid>
+            </TabItem>
+        </TabControl>
+
+        <TextBlock Grid.Row="1" Classes="status" Text="{Binding Summary}" />
+    </Grid>
+</UserControl>

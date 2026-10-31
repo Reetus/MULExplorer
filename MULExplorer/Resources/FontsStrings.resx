@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Ascii" xml:space="preserve"><value>ASCII</value></data>
+  <data name="Unicode" xml:space="preserve"><value>Unicode</value></data>
+  <data name="FontFamily" xml:space="preserve"><value>Font type</value></data>
+  <data name="Fonts" xml:space="preserve"><value>Fonts</value></data>
+  <data name="FontItem" xml:space="preserve"><value>Font {0}</value></data>
+  <data name="UnicodeFontItem" xml:space="preserve"><value>Font {0} ({1})</value></data>
+  <data name="Character" xml:space="preserve"><value>Character</value></data>
+  <data name="Code" xml:space="preserve"><value>Code</value></data>
+  <data name="XOffset" xml:space="preserve"><value>X offset</value></data>
+  <data name="YOffset" xml:space="preserve"><value>Y offset</value></data>
+  <data name="Advance" xml:space="preserve"><value>Advance</value></data>
+  <data name="Unknown" xml:space="preserve"><value>Unknown byte</value></data>
+  <data name="Header" xml:space="preserve"><value>Font header</value></data>
+  <data name="LineHeight" xml:space="preserve"><value>Line height</value></data>
+  <data name="PreviewText" xml:space="preserve"><value>Text preview</value></data>
+  <data name="PreviewTextDefault" xml:space="preserve"><value>The quick brown fox jumps over the lazy dog</value></data>
+  <data name="PreviewHue" xml:space="preserve"><value>Hue:</value></data>
+  <data name="SearchWatermark" xml:space="preserve"><value>Find character (A, 0x41, U+0041)</value></data>
+  <data name="FontSummary" xml:space="preserve"><value>{0} characters</value></data>
+</root>

@@ -1,0 +1,48 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="MULExplorer.App"
+             RequestedThemeVariant="Dark">
+
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.ThemeDictionaries>
+                <!-- Window fill over the Mica/Acrylic system backdrop (translucent), and when the
+                     platform has no backdrop (Linux, older Windows, "Solid" setting). -->
+                <ResourceDictionary x:Key="Dark">
+                    <SolidColorBrush x:Key="WindowTintBrush" Color="#991E1F22" />
+                    <SolidColorBrush x:Key="WindowSolidBrush" Color="#FF1E1F22" />
+                    <SolidColorBrush x:Key="PanelTintBrush" Color="#4D000000" />
+                </ResourceDictionary>
+                <ResourceDictionary x:Key="Light">
+                    <SolidColorBrush x:Key="WindowTintBrush" Color="#B3F3F3F3" />
+                    <SolidColorBrush x:Key="WindowSolidBrush" Color="#FFF3F3F3" />
+                    <SolidColorBrush x:Key="PanelTintBrush" Color="#33FFFFFF" />
+                </ResourceDictionary>
+            </ResourceDictionary.ThemeDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+
+    <Application.Styles>
+        <FluentTheme DensityStyle="Compact">
+            <!-- Softer text than Fluent's pure white/black: easier on the eyes for long browsing. -->
+            <FluentTheme.Palettes>
+                <ColorPaletteResources x:Key="Dark"
+                                       BaseHigh="#FFD4D4D4"
+                                       BaseMediumHigh="#FFB8B8B8"
+                                       BaseMedium="#FF9A9A9A"
+                                       BaseMediumLow="#FF6E6E6E"
+                                       AltHigh="#FF17181A"
+                                       RegionColor="#FF1E1F22"
+                                       ChromeMediumLow="#FF26272B" />
+                <ColorPaletteResources x:Key="Light"
+                                       BaseHigh="#FF242424"
+                                       BaseMediumHigh="#FF404040"
+                                       BaseMedium="#FF5E5E5E"
+                                       BaseMediumLow="#FF8A8A8A"
+                                       AltHigh="#FFFAFAFA"
+                                       RegionColor="#FFF3F3F3" />
+            </FluentTheme.Palettes>
+        </FluentTheme>
+        <StyleInclude Source="avares://MULExplorer/Styles.axaml" />
+    </Application.Styles>
+</Application>

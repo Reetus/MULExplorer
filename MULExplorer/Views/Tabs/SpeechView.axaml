@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MULExplorer.ViewModels.Tabs"
+             xmlns:l="using:UODataAccess.Loaders"
+             xmlns:r="using:MULExplorer.Resources"
+             x:Class="MULExplorer.Views.Tabs.SpeechView"
+             x:DataType="vm:SpeechViewModel">
+    <UserControl.Styles>
+        <Style Selector="ListBox.table ListBoxItem">
+            <Setter Property="Padding" Value="6,2" />
+            <Setter Property="MinHeight" Value="24" />
+        </Style>
+    </UserControl.Styles>
+    <Grid RowDefinitions="Auto,Auto,*,Auto">
+        <StackPanel Orientation="Horizontal" Spacing="12" Margin="6">
+            <TextBox Name="SearchBox" Width="300" PlaceholderText="{x:Static r:SpeechStrings.SearchWatermark}"
+                     Text="{Binding SearchText}" />
+        </StackPanel>
+
+        <Grid Grid.Row="1" ColumnDefinitions="70,70,*" Margin="6,0,6,2">
+            <TextBlock Classes="label" Text="{x:Static r:SpeechStrings.Order}" />
+            <TextBlock Grid.Column="1" Classes="label" Text="{x:Static r:Strings.Id}" />
+            <TextBlock Grid.Column="2" Classes="label" Text="{x:Static r:SpeechStrings.Keyword}" />
+        </Grid>
+
+        <ListBox Name="EntryList" Grid.Row="2" Classes="table" ItemsSource="{Binding VisibleEntries}"
+                 SelectedItem="{Binding SelectedEntry}">
+            <ListBox.ItemTemplate>
+                <DataTemplate DataType="l:SpeechEntry">
+                    <Grid ColumnDefinitions="70,70,*">
+                        <TextBlock Text="{Binding Order}" Opacity="0.7" />
+                        <TextBlock Grid.Column="1" Text="{Binding Id}" />
+                        <TextBlock Grid.Column="2" Text="{Binding Keyword}" TextTrimming="CharacterEllipsis" />
+                    </Grid>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <TextBlock Grid.Row="3" Classes="status" Text="{Binding Summary}" />
+    </Grid>
+</UserControl>

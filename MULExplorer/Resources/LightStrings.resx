@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="Lights" xml:space="preserve"><value>Lights</value></data>
+  <data name="LightItem" xml:space="preserve"><value>Light {0}</value></data>
+  <data name="InGamePreview" xml:space="preserve"><value>In-game preview</value></data>
+  <data name="LandTile" xml:space="preserve"><value>Background land tile:</value></data>
+  <data name="LightSource" xml:space="preserve"><value>Light source item:</value></data>
+  <data name="RawMin" xml:space="preserve"><value>Raw minimum</value></data>
+  <data name="RawMax" xml:space="preserve"><value>Raw maximum</value></data>
+  <data name="AverageIntensity" xml:space="preserve"><value>Average intensity (0–31)</value></data>
+  <data name="LitPixels" xml:space="preserve"><value>Lit pixels</value></data>
+</root>

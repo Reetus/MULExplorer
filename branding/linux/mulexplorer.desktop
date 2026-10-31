@@ -1,0 +1,11 @@
+[Desktop Entry]
+Type=Application
+Name=MUL Explorer
+GenericName=Ultima Online Data Viewer
+Comment=Browse Ultima Online client files (art, gumps, animations, maps, sounds...)
+Exec=mulexplorer
+Icon=mulexplorer
+Terminal=false
+Categories=Development;Graphics;Viewer;
+Keywords=ultima;online;uo;mul;uop;
+StartupWMClass=MULExplorer

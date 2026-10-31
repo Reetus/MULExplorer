@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <data name="FacetFelucca" xml:space="preserve"><value>Felucca</value></data>
+  <data name="FacetTrammel" xml:space="preserve"><value>Trammel</value></data>
+  <data name="FacetIlshenar" xml:space="preserve"><value>Ilshenar</value></data>
+  <data name="FacetMalas" xml:space="preserve"><value>Malas</value></data>
+  <data name="FacetTokuno" xml:space="preserve"><value>Tokuno</value></data>
+  <data name="FacetTerMur" xml:space="preserve"><value>Ter Mur</value></data>
+  <data name="Facet" xml:space="preserve"><value>Facet</value></data>
+  <data name="ShowStatics" xml:space="preserve"><value>Show statics</value></data>
+  <data name="ShowCenterCross" xml:space="preserve"><value>Show centre cross</value></data>
+  <data name="UsePatches" xml:space="preserve"><value>Apply diff patches</value></data>
+  <data name="UseAlternate" xml:space="preserve"><value>Use alternate (x) files</value></data>
+  <data name="ZoomIn" xml:space="preserve"><value>Zoom +</value></data>
+  <data name="ZoomOut" xml:space="preserve"><value>Zoom −</value></data>
+  <data name="GoTo" xml:space="preserve"><value>Go to</value></data>
+  <data name="GoToWatermark" xml:space="preserve"><value>x, y</value></data>
+  <data name="GoToInvalid" xml:space="preserve"><value>Enter coordinates as "x, y" inside the facet ({0} × {1}).</value></data>
+  <data name="Coords" xml:space="preserve"><value>Coords: {0}, {1}</value></data>
+  <data name="CoordsNone" xml:space="preserve"><value>Coords: –</value></data>
+  <data name="ZoomLabel" xml:space="preserve"><value>Zoom: {0}</value></data>
+  <data name="FacetInfo" xml:space="preserve"><value>{0}: {1} × {2} tiles ({3})</value></data>
+  <data name="PatchInfo" xml:space="preserve"><value>Diff patches: {0} land / {1} static blocks</value></data>
+  <data name="NoPatches" xml:space="preserve"><value>No diff patches</value></data>
+  <data name="TileInfo" xml:space="preserve"><value>Tile info</value></data>
+  <data name="ClickHint" xml:space="preserve"><value>Click the map to inspect a tile.</value></data>
+  <data name="Position" xml:space="preserve"><value>Position</value></data>
+  <data name="Land" xml:space="preserve"><value>Land</value></data>
+  <data name="Altitude" xml:space="preserve"><value>Altitude</value></data>
+  <data name="Statics" xml:space="preserve"><value>Statics</value></data>
+  <data name="NoStatics" xml:space="preserve"><value>No statics</value></data>
+  <data name="Z" xml:space="preserve"><value>Z</value></data>
+  <data name="Patched" xml:space="preserve"><value>patched</value></data>
+</root>

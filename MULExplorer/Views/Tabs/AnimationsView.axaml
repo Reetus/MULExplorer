@@ -1,0 +1,131 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:MULExplorer.ViewModels.Tabs"
+             xmlns:c="using:MULExplorer.Controls"
+             xmlns:r="using:MULExplorer.Resources"
+             x:Class="MULExplorer.Views.Tabs.AnimationsView"
+             x:DataType="vm:AnimationsViewModel">
+    <Grid ColumnDefinitions="300,6,*" RowDefinitions="*,Auto">
+        <!-- Body tree -->
+        <DockPanel Margin="6,6,0,6">
+            <TextBox Name="SearchBox" DockPanel.Dock="Top" Margin="0,0,0,6"
+                     PlaceholderText="{x:Static r:Strings.SearchWatermark}" Text="{Binding SearchText}" />
+            <TreeView Name="BodyTree" ItemsSource="{Binding Groups}" SelectedItem="{Binding SelectedNode}">
+                <TreeView.Styles>
+                    <Style Selector="TreeViewItem" x:DataType="vm:AnimationTreeNode">
+                        <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                        <Setter Property="MinHeight" Value="26" />
+                    </Style>
+                </TreeView.Styles>
+                <TreeView.ItemTemplate>
+                    <TreeDataTemplate DataType="vm:AnimationTreeNode" ItemsSource="{Binding Children}">
+                        <TextBlock Text="{Binding Label}" />
+                    </TreeDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+        </DockPanel>
+
+        <GridSplitter Grid.Column="1" ResizeDirection="Columns" />
+
+        <TabControl Grid.Column="2" Margin="0,0,6,0">
+            <TabItem Header="{x:Static r:AnimationsStrings.TabAnimation}">
+                <Grid ColumnDefinitions="*,6,260" RowDefinitions="Auto,*,Auto" Margin="0,6,0,0">
+                    <!-- Controls -->
+                    <WrapPanel Grid.ColumnSpan="3" Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,12,6">
+                            <TextBlock VerticalAlignment="Center" Text="{x:Static r:AnimationsStrings.Action}" />
+                            <ComboBox Name="ActionBox" MinWidth="220" ItemsSource="{Binding ActionChoices}"
+                                      SelectedItem="{Binding SelectedActionChoice}">
+                                <ComboBox.ItemTemplate>
+                                    <DataTemplate DataType="vm:ActionChoice">
+                                        <TextBlock Text="{Binding Label}" />
+                                    </DataTemplate>
+                                </ComboBox.ItemTemplate>
+                            </ComboBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,12,6">
+                            <TextBlock VerticalAlignment="Center" Text="{x:Static r:AnimationsStrings.Direction}" />
+                            <Slider Name="DirectionSlider" Width="140" Minimum="0" Maximum="7" TickFrequency="1"
+                                    IsSnapToTickEnabled="True" TickPlacement="BottomRight" Value="{Binding Direction}" />
+                            <TextBlock VerticalAlignment="Center" MinWidth="110" Text="{Binding DirectionLabel}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="12" Margin="0,0,12,6">
+                            <CheckBox Name="AnimateBox" Content="{x:Static r:AnimationsStrings.Animate}" IsChecked="{Binding IsPlaying}" />
+                            <CheckBox Content="{x:Static r:AnimationsStrings.ShowFrameBounds}" IsChecked="{Binding ShowFrameBounds}" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,0,6">
+                            <TextBlock VerticalAlignment="Center" Text="{x:Static r:Strings.Hue}" />
+                            <NumericUpDown Name="HueBox" Width="130" Minimum="0" Maximum="3000" Increment="1" FormatString="0"
+                                           Value="{Binding PreviewHue}" />
+                        </StackPanel>
+                    </WrapPanel>
+
+                    <!-- Preview -->
+                    <Border Grid.Row="1" Classes="preview">
+                        <Grid>
+                            <Image Name="PreviewImage" Source="{Binding Preview}" Stretch="Uniform" StretchDirection="DownOnly"
+                                   HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            <TextBlock Classes="placeholder" Text="{x:Static r:AnimationsStrings.NoAnimation}"
+                                       IsVisible="{Binding Preview, Converter={x:Static ObjectConverters.IsNull}}" />
+                        </Grid>
+                    </Border>
+
+                    <GridSplitter Grid.Row="1" Grid.Column="1" ResizeDirection="Columns" />
+
+                    <!-- Details -->
+                    <ScrollViewer Grid.Row="1" Grid.Column="2">
+                        <ItemsControl ItemsSource="{Binding Details}" Grid.IsSharedSizeScope="True" Margin="4,0">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate DataType="vm:PropertyRow">
+                                    <Grid Margin="0,0,0,4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="Auto" SharedSizeGroup="Label" />
+                                            <ColumnDefinition Width="12" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock Classes="label" Text="{Binding Label}" />
+                                        <SelectableTextBlock Grid.Column="2" Text="{Binding Value}" TextWrapping="Wrap" />
+                                    </Grid>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                    </ScrollViewer>
+
+                    <!-- Frame strip -->
+                    <ListBox Name="FrameList" Grid.Row="2" Grid.ColumnSpan="3" Margin="0,6,0,0" Height="118"
+                             ItemsSource="{Binding FrameStrip}" SelectedIndex="{Binding FrameIndex}"
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Disabled">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="vm:FrameThumb">
+                                <StackPanel Spacing="2">
+                                    <Image Source="{Binding Image}" Width="72" Height="80" Stretch="Uniform" StretchDirection="DownOnly" />
+                                    <TextBlock HorizontalAlignment="Center" FontSize="11" Text="{Binding Index}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                </Grid>
+            </TabItem>
+            <TabItem Header="{x:Static r:AnimationsStrings.TabThumbnails}">
+                <c:TileGrid Name="Thumbnails" CellWidth="100" CellHeight="100" Margin="0,6,0,0"
+                            Ids="{Binding VisibleBodies}"
+                            ImageProvider="{Binding ThumbnailProvider}"
+                            SelectedId="{Binding SelectedBody}" />
+            </TabItem>
+        </TabControl>
+
+        <Border Grid.Row="1" Grid.ColumnSpan="3" Classes="statusbar">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="{Binding StatusGraphic}" />
+                <TextBlock Text="{Binding StatusBaseGraphic}" />
+                <TextBlock Text="{Binding StatusHue}" />
+                <TextBlock Text="{Binding Summary}" />
+            </StackPanel>
+        </Border>
+    </Grid>
+</UserControl>
