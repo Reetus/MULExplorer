@@ -472,3 +472,6 @@ TestResults/
 
 # Agent worktrees
 .claude/
+
+# Publish profiles are part of the build (NativeAot/SingleFile), unlike the VS template default above.
+!MULExplorer/Properties/PublishProfiles/*.pubxml
