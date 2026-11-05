@@ -11,13 +11,18 @@ public enum UOPCompression : short
     ZlibBWT = 3
 }
 
-/// <summary>One file inside a UOP container. <see cref="Offset" /> already skips the per-entry header.</summary>
+/// <summary>
+///     One file inside a UOP container. <see cref="Offset" /> already skips the per-entry header of
+///     <see cref="HeaderLength" /> bytes; <see cref="Checksum" /> is the table's 32-bit Adler32 field.
+/// </summary>
 public readonly record struct UOPEntry(
     long Offset,
     int CompressedLength,
     int DecompressedLength,
     ulong Hash,
-    UOPCompression Compression );
+    UOPCompression Compression,
+    int HeaderLength = 0,
+    uint Checksum = 0 );
 
 /// <summary>
 ///     Mythic's UOP container ("MYP\0"). Entries are addressed by <see cref="UOPHash" /> of a
@@ -36,6 +41,12 @@ public sealed class UOPArchive : IDisposable
     }
 
     public MappedFile File { get; }
+
+    /// <summary>Container version (4 or 5 in shipped clients).</summary>
+    public int Version { get; private set; }
+
+    /// <summary>Entries per directory block declared in the header (100 or 1000 in shipped clients).</summary>
+    public int BlockCapacity { get; private set; }
 
     public IReadOnlyDictionary<ulong, UOPEntry> Entries => _entries;
 
@@ -59,6 +70,9 @@ public sealed class UOPArchive : IDisposable
             ? UOPHash.Compute( buffer[..written] )
             : UOPHash.Compute( string.Format( null, format, id ) );
     }
+
+    /// <summary>The opaque per-entry header in front of the payload (often empty).</summary>
+    public ReadOnlySpan<byte> ReadHeader( in UOPEntry entry ) => File.Slice( entry.Offset - entry.HeaderLength, entry.HeaderLength );
 
     /// <summary>Raw (still compressed) bytes of an entry.</summary>
     public ReadOnlySpan<byte> ReadRaw( in UOPEntry entry ) => File.Slice( entry.Offset, entry.CompressedLength );
@@ -97,8 +111,10 @@ public sealed class UOPArchive : IDisposable
             throw new InvalidDataException( $"Not a UOP file: {File.Path}" );
         }
 
-        // magic, version, signature, then the first block offset.
+        // magic, version, signature, first block offset, block capacity, file count.
+        Version = BinaryPrimitives.ReadInt32LittleEndian( data[4..] );
         var nextBlock = BinaryPrimitives.ReadInt64LittleEndian( data[12..] );
+        BlockCapacity = BinaryPrimitives.ReadInt32LittleEndian( data[20..] );
 
         while ( nextBlock > 0 && nextBlock < data.Length )
         {
@@ -123,9 +139,10 @@ public sealed class UOPArchive : IDisposable
                 var compressed = BinaryPrimitives.ReadInt32LittleEndian( r[12..] );
                 var decompressed = BinaryPrimitives.ReadInt32LittleEndian( r[16..] );
                 var hash = BinaryPrimitives.ReadUInt64LittleEndian( r[20..] );
+                var checksum = BinaryPrimitives.ReadUInt32LittleEndian( r[28..] );
                 var flag = ( UOPCompression )BinaryPrimitives.ReadInt16LittleEndian( r[32..] );
 
-                _entries[hash] = new UOPEntry( offset + headerLength, compressed, decompressed, hash, flag );
+                _entries[hash] = new UOPEntry( offset + headerLength, compressed, decompressed, hash, flag, headerLength, checksum );
             }
         }
     }
