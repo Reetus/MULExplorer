@@ -172,6 +172,49 @@ public sealed class Cliloc
         return sb.ToString();
     }
 
+    /// <summary>
+    ///     Writes an uncompressed cliloc: header <c>(2:i32, 1:i16)</c> then the records in ascending
+    ///     number order. ClassicUO-based clients detect BWT by the first bytes, so they read either
+    ///     form; the official client from 7.0.104 expects the compressed one.
+    /// </summary>
+    public static void Write( Stream stream, IEnumerable<ClilocEntry> entries )
+    {
+        Span<byte> header = stackalloc byte[7];
+        BinaryPrimitives.WriteInt32LittleEndian( header, 2 );
+        BinaryPrimitives.WriteInt16LittleEndian( header[4..], 1 );
+        stream.Write( header[..6] );
+
+        var buffer = new byte[256];
+        var last = int.MinValue;
+
+        foreach ( var e in entries.OrderBy( e => e.Number ) )
+        {
+            if ( e.Number == last )
+            {
+                throw new ArgumentException( $"Duplicate cliloc number {e.Number}.", nameof( entries ) );
+            }
+
+            var length = Encoding.UTF8.GetByteCount( e.Text );
+
+            if ( length > ushort.MaxValue )
+            {
+                throw new ArgumentException( $"Cliloc {e.Number} is longer than 65535 bytes.", nameof( entries ) );
+            }
+
+            if ( buffer.Length < length )
+            {
+                buffer = new byte[Math.Max( length, buffer.Length * 2 )];
+            }
+
+            BinaryPrimitives.WriteInt32LittleEndian( header, e.Number );
+            header[4] = e.Flag;
+            BinaryPrimitives.WriteUInt16LittleEndian( header[5..], ( ushort )length );
+            stream.Write( header );
+            stream.Write( buffer, 0, Encoding.UTF8.GetBytes( e.Text, buffer ) );
+            last = e.Number;
+        }
+    }
+
     private static List<ClilocEntry>? TryParse( ReadOnlySpan<byte> data )
     {
         if ( data.Length < 6 )

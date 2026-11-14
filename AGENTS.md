@@ -36,6 +36,7 @@ The GUI also auto-starts the HTTP server (settings `mcpPort`/`mcpAutoStart`), ad
 | `MULExplorer.Mcp` | MCP server on the official C# SDK (`ModelContextProtocol` 2.2): stdio + Streamable HTTP (Kestrel, loopback). |
 | `MULExplorer` | Avalonia 12 app (Fluent theme, dark by default), CommunityToolkit.Mvvm, `PublishAot`. Entry point `Program.cs`. |
 | `MULExplorer.Tests` | xUnit v3 + Avalonia.Headless.XUnit (real `App`, Skia rendering, so screenshots work). |
+| `UOMerge` | CLI: updates a customised client from a newer official one, keeping custom entries (see below). |
 
 ## Data layer (`UODataAccess`)
 
@@ -51,6 +52,15 @@ The GUI also auto-starts the HTTP server (settings `mcpPort`/`mcpAutoStart`), ad
 - `IO/UOPArchive` — raw UOP container access for formats that are not id-indexed (multis, animations, tileart).
 - `Imaging/Pixmap` — decoded image, `uint` pixels `0xAARRGGBB` (= Avalonia `Bgra8888`). `Color16` converts
   UO ARGB1555. `PngEncoder` writes PNGs (used by MCP image results).
+- Writers (output only, never into a client folder): `IO/UOPArchiveWriter` (streaming UOP, `CopyFrom` copies an
+  entry verbatim), `IO/MULFileWriter` (idx+mul pair), `Cliloc.Write` (uncompressed).
+- `Merge/` — per-entry client merge. "Local" = customised client, "upstream" = newer official, "stock" = any official
+  clients. Rule (`MergeRules.Decide`): local equal to upstream or to any stock version → take upstream; otherwise it
+  is custom and kept; upstream-only → added. Empty slots (missing UOP entry, all-zero or filler record, blank cliloc)
+  never count as custom. `UOPMerger` (by hash, gumps/art compared by decoded pixels), `RecordFileMerger`
+  (tiledata/hues/radarcol/animdata), `IndexedMULMerger` (texmaps, anim*.mul), `ClilocMerger`.
+  `UOMerge --local DIR --upstream DIR --stock DIR... --out DIR [--assets ...] [--dry-run]` writes merged files,
+  `merge-report.txt`, `merge-items.tsv` and `review/index.html` (kept customs next to what upstream has).
 - Implemented loaders: `TileData`, `Hues`, `Art`, `Gumps`, `Cliloc`, `RadarColors`. Others are stubs marked `TODO`.
 
 Style for format code: `BinaryPrimitives` over spans, `stackalloc`/`ArrayPool` instead of temp arrays,
