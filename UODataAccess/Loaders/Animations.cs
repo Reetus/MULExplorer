@@ -94,10 +94,12 @@ public sealed record AnimationBody(
 ///     Mobile and equipment animations. Legacy bodies live in <c>anim.mul</c>..<c>anim6.mul</c>
 ///     (5 stored directions per action, the other 3 mirrored; idx records grouped per body in
 ///     high/low/people blocks of 22/13/35 actions). Bodies flagged <c>UseUOPAnimation</c> in
-///     mobtypes.txt come from <c>AnimationFrame*.uop</c>, with action aliases from
-///     <c>AnimationSequence.uop</c>. Body.def and Bodyconv.def remap server bodies onto file bodies.
-///     Follows ClassicUO's <c>AnimationsLoader</c>. Everything is opened and decoded lazily; decoded
-///     frame sets are cached.
+///     mobtypes.txt come from <c>AnimationFrame*.uop</c>; <c>AnimationSequence.uop</c> supplies their
+///     action aliases and, through its mode blocks, the role (stand/walk/die/...) of each group, since
+///     these bodies do not follow the fixed action layout of their type. Body.def and Bodyconv.def
+///     remap server bodies onto file bodies. Follows ClassicUO's <c>AnimationsLoader</c> for frames;
+///     the mode blocks follow the client's own sequence reader. Everything is opened and decoded
+///     lazily; decoded frame sets are cached.
 /// </summary>
 public sealed class Animations : IDisposable
 {
@@ -109,6 +111,7 @@ public sealed class Animations : IDisposable
     private const int MaxCachedFrameSets = 512;
 
     private static readonly CompositeFormat UOPFramePattern = CompositeFormat.Parse( "build/animationlegacyframe/{0:D6}/{1:D2}.bin" );
+    private static readonly CompositeFormat UOPSequencePattern = CompositeFormat.Parse( "build/animationsequence/{0:D8}.bin" );
 
     private readonly Lock _lock = new();
     private readonly Dictionary<int, (MobType Type, MobFlags Flags)> _mobTypes = new();
@@ -116,7 +119,7 @@ public sealed class Animations : IDisposable
     private readonly Dictionary<int, (int Body, int Hue)> _corpseDef = new();
     private readonly Dictionary<int, (int FileIndex, int Body)> _bodyConv = new();
     private readonly Dictionary<int, Dictionary<int, EquipConversion>> _equipConv = new();
-    private readonly Dictionary<int, int[]> _uopReplacements = new();
+    private readonly Dictionary<int, AnimationSequence> _sequences = new();
     private readonly Dictionary<int, AnimationBody> _bodies = new();
     private readonly Dictionary<long, AnimationFrame[]> _frameCache = new();
     private readonly Queue<long> _frameCacheOrder = new();
@@ -405,6 +408,31 @@ public sealed class Animations : IDisposable
         }
 
         return result;
+    }
+
+    /// <summary>
+    ///     The name of one action of a body. A UOP (<c>UseUOPAnimation</c>) body with an
+    ///     AnimationSequence.uop entry that has mode blocks does not follow the fixed action layout of
+    ///     its mobtypes.txt type, so its groups are named from the roles in the mode tables and aliases
+    ///     are shown as redirects. Every other body keeps UOFiddler's per-type action names.
+    /// </summary>
+    public string GetActionName( int body, int action )
+    {
+        var info = GetBody( body );
+
+        if ( ( info.Flags & MobFlags.UseUOPAnimation ) != 0 && GetSequence( info.FileBody ) is { HasModes: true } sequence )
+        {
+            return sequence.GetActionName( action );
+        }
+
+        return GetActionName( info.Type, action );
+    }
+
+    /// <summary>The parsed AnimationSequence.uop entry of a body, or <c>null</c> when it has none.</summary>
+    public AnimationSequence? GetSequence( int body )
+    {
+        UOPArchives();                                   // loads the sequence table on first use
+        return _sequences.TryGetValue( body, out var sequence ) ? sequence : null;
     }
 
     /// <summary>UOFiddler's action names for a body type, or <c>Action N</c>.</summary>
@@ -724,8 +752,8 @@ public sealed class Animations : IDisposable
 
     private int ResolveUOPAction( int body, int action )
     {
-        UOPArchives();
-        return _uopReplacements.TryGetValue( body, out var map ) && ( uint )action < ( uint )map.Length ? map[action] : action;
+        var sequence = GetSequence( body );
+        return sequence is not null && ( uint )action < ( uint )sequence.Replaced.Count ? sequence.Replaced[action] : action;
     }
 
     private bool TryFindUOP( int body, int action, out UOPArchive archive, out UOPEntry entry )
@@ -842,16 +870,26 @@ public sealed class Animations : IDisposable
     }
 
     /// <summary>
-    ///     AnimationSequence.uop: per body, groups that borrow another group's frames (frame count 0
-    ///     and a replacement group). Records are 64 fixed bytes plus two counted lists (32-byte and
-    ///     4-byte items), walked properly so the few bodies with extra records also resolve.
+    ///     AnimationSequence.uop. The client finds an entry by its name
+    ///     <c>build/animationsequence/{0:D8}.bin</c>; a few shipped entries hold a different body id
+    ///     inside, so entries are keyed by the name and never by that field. Each entry is parsed in
+    ///     full (action records + mode blocks) by <see cref="AnimationSequence" />.
     /// </summary>
     private void ReadAnimationSequence( string path )
     {
         using var archive = UOPArchive.Open( path );
+        var remaining = archive.Count;
 
-        foreach ( var entry in archive.Entries.Values )
+        // Body ids are 16-bit in the client; stop early once every named entry has been found.
+        for ( var body = 0; body <= 0xFFFF && remaining > 0; body++ )
         {
+            if ( !archive.TryGet( UOPSequencePattern, body, out var entry ) )
+            {
+                continue;
+            }
+
+            remaining--;
+
             byte[] data;
 
             try
@@ -863,60 +901,10 @@ public sealed class Animations : IDisposable
                 continue;
             }
 
-            if ( data.Length < 56 )
+            if ( AnimationSequence.Parse( data ) is { } sequence )
             {
-                continue;
+                _sequences[body] = sequence;
             }
-
-            var body = BinaryPrimitives.ReadInt32LittleEndian( data );
-            var groups = BinaryPrimitives.ReadInt32LittleEndian( data[52..] );
-            var map = new int[MaxActions];
-
-            for ( var i = 0; i < map.Length; i++ )
-            {
-                map[i] = i;
-            }
-
-            var p = 56;
-
-            for ( var g = 0; g < groups && p + 64 <= data.Length; g++ )
-            {
-                var group = BinaryPrimitives.ReadInt32LittleEndian( data[p..] );
-                var frameCount = BinaryPrimitives.ReadInt32LittleEndian( data[( p + 4 )..] );
-                var replacement = BinaryPrimitives.ReadInt32LittleEndian( data[( p + 8 )..] );
-                p += 64;
-
-                if ( frameCount == 0 && ( uint )group < MaxActions && replacement >= 0 )
-                {
-                    map[group] = replacement;
-                }
-
-                if ( !SkipList( data, ref p, 32 ) || !SkipList( data, ref p, 4 ) )
-                {
-                    break;
-                }
-            }
-
-            _uopReplacements[body] = map;
-        }
-
-        static bool SkipList( byte[] data, ref int p, int itemSize )
-        {
-            if ( p + 4 > data.Length )
-            {
-                return false;
-            }
-
-            var count = BinaryPrimitives.ReadInt32LittleEndian( data[p..] );
-            p += 4;
-
-            if ( count < 0 || ( long )count * itemSize > data.Length - p )
-            {
-                return false;
-            }
-
-            p += count * itemSize;
-            return true;
         }
     }
 

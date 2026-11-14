@@ -329,7 +329,7 @@ public sealed partial class AnimationsViewModel : TabViewModel
 
                 foreach ( var action in info.Actions )
                 {
-                    ActionChoices.Add( new ActionChoice( action, $"{action} {Animations.GetActionName( info.Type, action )}" ) );
+                    ActionChoices.Add( new ActionChoice( action, $"{action} {data.Animations.GetActionName( SelectedBody, action )}" ) );
                 }
             }
 

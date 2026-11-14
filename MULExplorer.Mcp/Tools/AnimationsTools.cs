@@ -177,7 +177,7 @@ public sealed class AnimationsTools : IToolProvider
             ["actions"] = new JsonArray( info.Actions.Select( a => ( JsonNode? )new JsonObject
             {
                 ["action"] = a,
-                ["name"] = Animations.GetActionName( info.Type, a ),
+                ["name"] = animations.GetActionName( body, a ),
                 ["frames"] = animations.GetFrames( body, a, 1 ).Length
             } ).ToArray() )
         };
