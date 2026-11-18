@@ -44,6 +44,8 @@ dotnet run --project MULExplorer -- --uo-folder <client folder>
 
 Packages: `branding/windows/build-setup.ps1` (Setup.exe) and `branding/linux/build-appimage.sh`
 (AppImage), both via [Velopack](https://velopack.io). Releases are built by the **Release**
-workflow (Actions › Release › Run workflow, enter a version).
+workflow (Actions › Release › Run workflow, enter a version) from `main`. It signs the Windows
+binaries with Azure Artifact Signing (`branding/windows/trusted-signing.json`) over GitHub OIDC,
+using the `AZURE_CLIENT_ID`/`AZURE_TENANT_ID`/`AZURE_SUBSCRIPTION_ID` repository secrets.
 
 See [AGENTS.md](AGENTS.md) for architecture and conventions.
