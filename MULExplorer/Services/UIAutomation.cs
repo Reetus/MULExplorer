@@ -97,6 +97,13 @@ public sealed class UIAutomation( Window window, MainWindowViewModel vm ) : IUIA
         ["mcpUrl"] = vm.IsMcpRunning ? vm.McpUrl : null
     } );
 
+    public Task OpenFolderAsync( string folder ) => OnUIAsync( async () =>
+    {
+        await vm.OpenFolderAsync( folder );
+        await Settle();
+        return true;
+    } );
+
     private TabViewModel Find( string tab ) =>
         vm.FindTab( tab ) ?? throw new ArgumentException( $"No tab '{tab}'. Tabs: {string.Join( ", ", vm.Tabs.Select( t => t.Header ) )}" );
 

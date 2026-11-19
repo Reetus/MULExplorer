@@ -73,9 +73,7 @@ public sealed class Settings
         new[] { commandLine, Environment.GetEnvironmentVariable( "UO_DATA_FOLDER" ), UOFolder }
             .FirstOrDefault( IsClientFolder );
 
-    public static bool IsClientFolder( string? path ) =>
-        !string.IsNullOrWhiteSpace( path ) && Directory.Exists( path ) &&
-        Directory.EnumerateFiles( path ).Any( f => Path.GetFileName( f ).Equals( "tiledata.mul", StringComparison.OrdinalIgnoreCase ) );
+    public static bool IsClientFolder( string? path ) => UODataAccess.UOData.IsClientFolder( path );
 }
 
 [JsonSourceGenerationOptions( WriteIndented = true, PropertyNamingPolicy = JsonKnownNamingPolicy.CamelCase )]

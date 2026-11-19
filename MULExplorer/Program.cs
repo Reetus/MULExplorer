@@ -43,7 +43,7 @@ internal static class Program
         var settings = Settings.Load();
         var resolved = settings.ResolveUOFolder( folder );
         using var data = resolved is null ? null : new UOData( resolved );
-        var context = new McpContext { Data = data };
+        using var context = new McpContext { Data = data };
 
         if ( args.Contains( "--mcp-stdio" ) )
         {

@@ -55,6 +55,11 @@ public sealed class UOData( string folder ) : IDisposable
 
     public MultiMap MultiMap => Get( ref field, static f => new MultiMap( f ) );
 
+    /// <summary>True when <paramref name="path" /> is a folder holding a <c>tiledata.mul</c> (any case).</summary>
+    public static bool IsClientFolder( string? path ) =>
+        !string.IsNullOrWhiteSpace( path ) && Directory.Exists( path ) &&
+        Directory.EnumerateFiles( path ).Any( f => Path.GetFileName( f ).Equals( "tiledata.mul", StringComparison.OrdinalIgnoreCase ) );
+
     public void Dispose()
     {
         lock ( _lock )

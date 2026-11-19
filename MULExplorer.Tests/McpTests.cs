@@ -101,6 +101,42 @@ public sealed class McpTests
         Assert.DoesNotContain( "unavailable", json["assets"]!["art"]!.GetValue<string>() );
     }
 
+    /// <summary>Folder switching needs no real client: a folder with a tiledata.mul counts.</summary>
+    [Fact]
+    public async Task SetClientFolder_SwitchesAndReloads()
+    {
+        using var a = new TempDir();
+        using var b = new TempDir();
+        File.WriteAllBytes( a.File( "tiledata.mul" ), [] );
+        File.WriteAllBytes( b.File( "TileData.mul" ), [] );
+        using var context = new McpContext();
+        var registry = MULExplorerMcpServer.CreateRegistry( context );
+
+        var json = TextJson( await McpTestExtensions.Call( registry, "set_client_folder", Args( new Dictionary<string, object> { ["folder"] = a.Path } ) ) );
+        Assert.Equal( a.Path, json["folder"]!.GetValue<string>() );
+        var first = context.Data;
+
+        json = TextJson( await McpTestExtensions.Call( registry, "reload_client_folder", null ) );
+        Assert.Equal( a.Path, json["folder"]!.GetValue<string>() );
+        Assert.NotSame( first, context.Data );
+
+        json = TextJson( await McpTestExtensions.Call( registry, "set_client_folder", Args( new Dictionary<string, object> { ["folder"] = b.Path } ) ) );
+        Assert.Equal( b.Path, json["folder"]!.GetValue<string>() );
+        Assert.Equal( b.Path, context.Data!.Folder );
+
+        var bad = await McpTestExtensions.Call( registry, "set_client_folder", Args( new Dictionary<string, object> { ["folder"] = a.File( "missing" ) } ) );
+        Assert.True( bad.IsError is true );
+        Assert.Equal( b.Path, context.Data!.Folder );
+    }
+
+    [Fact]
+    public async Task ReloadClientFolder_FailsCleanlyWithoutFolder()
+    {
+        var registry = MULExplorerMcpServer.CreateRegistry( new McpContext() );
+
+        Assert.True( ( await McpTestExtensions.Call( registry, "reload_client_folder", null ) ).IsError is true );
+    }
+
     /// <summary>End to end over Streamable HTTP using the SDK's own client.</summary>
     [Fact]
     public async Task Http_ServesToolsToSdkClient()

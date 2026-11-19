@@ -27,6 +27,8 @@ MULExplorer --mcp-http [--mcp-port 5006] [--uo-folder PATH]   # http://127.0.0.1
 ```
 
 The GUI also auto-starts the HTTP server (settings `mcpPort`/`mcpAutoStart`), adding `ui_*` tools.
+`set_client_folder` switches the client folder at runtime (e.g. to compare client versions; in the GUI the window
+follows, the saved setting does not) and `reload_client_folder` re-reads files changed on disk.
 
 ## Projects
 

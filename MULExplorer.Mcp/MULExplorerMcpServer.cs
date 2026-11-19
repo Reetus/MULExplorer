@@ -23,7 +23,7 @@ public static class MULExplorerMcpServer
 
     private const string Instructions =
         "Read-only explorer for Ultima Online client data files (MUL/UOP). Ids accept decimal or 0x hex. " +
-        "Start with get_client_info. Data tools (items, land, gumps, hues, cliloc, multis, animations, maps, sounds...) work headless; " +
+        "Start with get_client_info; set_client_folder switches to another client folder (e.g. to compare versions), reload_client_folder re-reads changed files. Data tools (items, land, gumps, hues, cliloc, multis, animations, maps, sounds...) work headless; " +
         "ui_* tools drive the MULExplorer window (select tabs/entries, read tab state, take screenshots) and need the GUI.";
 
     /// <summary>Every tool provider. Each tab owns one so features stay in separate files.</summary>

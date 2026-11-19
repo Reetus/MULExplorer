@@ -185,6 +185,31 @@ public sealed class UITests
     }
 
     [AvaloniaFact]
+    public async Task McpSetClientFolder_SwitchesTheWindow()
+    {
+        var folder = UOTestData.RequireFolder();
+        var (window, vm, ui) = await OpenAsync( withData: false );
+        var registry = MULExplorerMcpServer.CreateRegistry( vm.McpContext );
+        await ui.SelectTabAsync( "Items" );
+
+        var set = await McpTestExtensions.Call( registry, "set_client_folder", new Dictionary<string, System.Text.Json.JsonElement>
+        {
+            ["folder"] = System.Text.Json.JsonSerializer.SerializeToElement( folder, McpTestJson.Default.String )
+        } );
+        Assert.True( set.IsError is not true, ( ( ModelContextProtocol.Protocol.TextContentBlock )set.Content[0] ).Text );
+        Assert.Equal( System.IO.Path.GetFullPath( folder ), vm.Data!.Folder );
+        Assert.Same( vm.Data, vm.McpContext.Data );
+        Assert.True( ( await ui.GetTabStateAsync( "Items" ) )["loaded"]!.GetValue<bool>() );
+
+        var before = vm.Data;
+        var reload = await McpTestExtensions.Call( registry, "reload_client_folder", null );
+        Assert.True( reload.IsError is not true );
+        Assert.NotSame( before, vm.Data );
+        Assert.Null( vm.Settings.UOFolder );
+        window.Close();
+    }
+
+    [AvaloniaFact]
     public async Task McpUITools_DriveTheWindow()
     {
         var (window, vm, _) = await OpenAsync();
